@@ -699,81 +699,159 @@ body::after{
 
 <script>
 /* ═══════════════════════════════════════════════════════════
-   AMBIENT GLOW — premium minimal background
-   Soft gradient orbs drift slowly. A fine dot-grid gives
-   subtle texture. One gentle light sweep crosses occasionally.
-   Clean, elegant, never crowded.
+   AURORA MESH — premium generative background
+   Flowing gradient mesh with subtle grid lines and 
+   floating luminous particles. Inspired by Vercel/Linear.
+   Slow, elegant, never crowded.
    ═══════════════════════════════════════════════════════════ */
 (function(){
 const c = document.getElementById('bgCanvas');
 const ctx = c.getContext('2d');
-let W, H, t = 0;
+let W, H, t = 0, mouseX = -1, mouseY = -1;
 
 function resize(){ W = c.width = window.innerWidth; H = c.height = window.innerHeight; }
 window.addEventListener('resize', resize); resize();
+document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
 
-/* ── 3 gradient orbs — large, slow, visible but not loud ── */
-const orbs = [
-  { x: .18, y: .22, r: .5, px: 0, py: 0, sx: .00025, sy: .0002 },
-  { x: .78, y: .6, r: .45, px: 1.8, py: 2.4, sx: .0002, sy: .00025 },
-  { x: .45, y: .82, r: .38, px: 3.2, py: 1.0, sx: .0003, sy: .00018 },
+/* ── Aurora gradient blobs — large, morphing, color-tinted ── */
+const auroras = [
+  { x:.15, y:.2, r:.55, px:0, py:0, sx:.00012, sy:.00015, hueOff:0 },
+  { x:.75, y:.35, r:.5, px:2, py:1.5, sx:.00015, sy:.0001, hueOff:120 },
+  { x:.5, y:.75, r:.45, px:4, py:3, sx:.0001, sy:.00013, hueOff:240 },
+  { x:.3, y:.55, r:.35, px:1.5, py:4.5, sx:.00018, sy:.00012, hueOff:60 },
 ];
 
-/* ── Light sweep — a slow diagonal bar of light ── */
-let sweepX = -0.3;
-const SWEEP_SPEED = .00015;
+/* ── Floating micro-particles ── */
+const particles = [];
+for(let i = 0; i < 35; i++){
+  particles.push({
+    x: Math.random(), y: Math.random(),
+    vx: (Math.random()-.5)*.0002, vy: (Math.random()-.5)*.0002,
+    r: Math.random()*1.5+.5, a: Math.random()*.3+.1,
+    pulse: Math.random()*Math.PI*2, pulseSpeed: Math.random()*.005+.002
+  });
+}
+
+/* ── Grid config ── */
+const GRID_SPACING = 60;
 
 function frame(){
   t++;
   const isLight = document.documentElement.getAttribute('data-theme') === 'light';
   const col = isLight ? '0,0,0' : '255,255,255';
 
+  /* Clear */
   ctx.fillStyle = isLight ? '#fafafa' : '#050505';
   ctx.fillRect(0, 0, W, H);
 
-  /* ── Gradient orbs ── */
-  for(const o of orbs){
-    o.px += o.sx;
-    o.py += o.sy;
-    const ox = (o.x + Math.sin(o.px) * .1) * W;
-    const oy = (o.y + Math.cos(o.py) * .08) * H;
-    const or_ = o.r * Math.max(W, H);
+  /* ── Aurora mesh blobs with very subtle color tint ── */
+  ctx.globalCompositeOperation = 'lighter';
+  for(const a of auroras){
+    a.px += a.sx;
+    a.py += a.sy;
+    const ax = (a.x + Math.sin(a.px)*.12)*W;
+    const ay = (a.y + Math.cos(a.py)*.1)*H;
+    const ar = a.r * Math.max(W,H);
 
-    const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, or_);
-    const a0 = isLight ? .03 : .06;
-    const a1 = isLight ? .01 : .02;
-    g.addColorStop(0, `rgba(${col},${a0})`);
-    g.addColorStop(.45, `rgba(${col},${a1})`);
-    g.addColorStop(1, `rgba(${col},0)`);
+    const g = ctx.createRadialGradient(ax, ay, 0, ax, ay, ar);
+    if(isLight){
+      g.addColorStop(0, `rgba(0,0,0,.025)`);
+      g.addColorStop(.4, `rgba(0,0,0,.012)`);
+      g.addColorStop(1, `rgba(0,0,0,0)`);
+    } else {
+      const hue = (a.hueOff + t*.02) % 360;
+      const sat = 8;
+      g.addColorStop(0, `hsla(${hue},${sat}%,70%,.045)`);
+      g.addColorStop(.35, `hsla(${hue},${sat}%,60%,.02)`);
+      g.addColorStop(1, `hsla(${hue},${sat}%,50%,0)`);
+    }
     ctx.fillStyle = g;
-    ctx.fillRect(ox - or_, oy - or_, or_ * 2, or_ * 2);
+    ctx.beginPath();
+    ctx.arc(ax, ay, ar, 0, Math.PI*2);
+    ctx.fill();
+  }
+  ctx.globalCompositeOperation = 'source-over';
+
+  /* ── Subtle perspective grid lines ── */
+  const gridA = isLight ? .025 : .04;
+  const waveAmp = 3;
+  ctx.strokeStyle = `rgba(${col},${gridA})`;
+  ctx.lineWidth = .5;
+
+  /* Horizontal lines with wave */
+  for(let gy = GRID_SPACING; gy < H; gy += GRID_SPACING){
+    ctx.beginPath();
+    for(let gx = 0; gx <= W; gx += 10){
+      const wave = Math.sin(gx*.003 + t*.006 + gy*.002) * waveAmp;
+      if(gx === 0) ctx.moveTo(gx, gy + wave);
+      else ctx.lineTo(gx, gy + wave);
+    }
+    ctx.stroke();
   }
 
-  /* ── Dot grid — fixed positions, pulse opacity ── */
-  const spacing = 80;
-  const dotAlphaBase = isLight ? .04 : .06;
-  const pulse = .5 + Math.sin(t * .008) * .5;
-  ctx.fillStyle = `rgba(${col},${dotAlphaBase * (.3 + pulse * .7)})`;
-  for(let gx = spacing / 2; gx < W; gx += spacing){
-    for(let gy = spacing / 2; gy < H; gy += spacing){
-      ctx.fillRect(gx - .5, gy - .5, 1, 1);
+  /* Vertical lines with wave */
+  for(let gx = GRID_SPACING; gx < W; gx += GRID_SPACING){
+    ctx.beginPath();
+    for(let gy = 0; gy <= H; gy += 10){
+      const wave = Math.sin(gy*.003 + t*.006 + gx*.002) * waveAmp;
+      if(gy === 0) ctx.moveTo(gx + wave, gy);
+      else ctx.lineTo(gx + wave, gy);
+    }
+    ctx.stroke();
+  }
+
+  /* ── Grid intersection glow (brighter dots at crossings) ── */
+  const dotA = isLight ? .06 : .1;
+  for(let gx = GRID_SPACING; gx < W; gx += GRID_SPACING){
+    for(let gy = GRID_SPACING; gy < H; gy += GRID_SPACING){
+      const dist = mouseX > 0 ? Math.hypot(gx - mouseX, gy - mouseY) : 999;
+      const boost = dist < 150 ? (1 - dist/150) * .15 : 0;
+      ctx.fillStyle = `rgba(${col},${dotA + boost})`;
+      ctx.beginPath();
+      ctx.arc(gx, gy, 1 + boost*2, 0, Math.PI*2);
+      ctx.fill();
     }
   }
 
-  /* ── Light sweep — diagonal bar traversing screen ── */
-  sweepX += SWEEP_SPEED;
-  if(sweepX > 1.5) sweepX = -.5;
+  /* ── Floating particles with glow ── */
+  for(const p of particles){
+    p.x += p.vx;
+    p.y += p.vy;
+    p.pulse += p.pulseSpeed;
+    if(p.x < -.02) p.x = 1.02;
+    if(p.x > 1.02) p.x = -.02;
+    if(p.y < -.02) p.y = 1.02;
+    if(p.y > 1.02) p.y = -.02;
 
-  const sx = sweepX * W;
-  const sw = W * .25;
-  const sweepGrad = ctx.createLinearGradient(sx - sw, 0, sx + sw, 0);
-  const sa = isLight ? .015 : .025;
-  sweepGrad.addColorStop(0, `rgba(${col},0)`);
-  sweepGrad.addColorStop(.4, `rgba(${col},${sa})`);
-  sweepGrad.addColorStop(.5, `rgba(${col},${sa * 1.2})`);
-  sweepGrad.addColorStop(.6, `rgba(${col},${sa})`);
-  sweepGrad.addColorStop(1, `rgba(${col},0)`);
-  ctx.fillStyle = sweepGrad;
+    const px = p.x * W, py = p.y * H;
+    const alpha = p.a * (.5 + Math.sin(p.pulse)*.5);
+    const glowR = p.r * 6;
+
+    /* Glow halo */
+    const gg = ctx.createRadialGradient(px, py, 0, px, py, glowR);
+    gg.addColorStop(0, `rgba(${col},${alpha*.4})`);
+    gg.addColorStop(1, `rgba(${col},0)`);
+    ctx.fillStyle = gg;
+    ctx.fillRect(px - glowR, py - glowR, glowR*2, glowR*2);
+
+    /* Core dot */
+    ctx.fillStyle = `rgba(${col},${alpha})`;
+    ctx.beginPath();
+    ctx.arc(px, py, p.r, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  /* ── Slow diagonal light sweep ── */
+  const sweepPos = ((t * .0001) % 1.8) - .4;
+  const sx = sweepPos * W;
+  const sw = W * .3;
+  const sg = ctx.createLinearGradient(sx - sw, 0, sx + sw, H);
+  const sa = isLight ? .012 : .02;
+  sg.addColorStop(0, `rgba(${col},0)`);
+  sg.addColorStop(.45, `rgba(${col},${sa})`);
+  sg.addColorStop(.55, `rgba(${col},${sa})`);
+  sg.addColorStop(1, `rgba(${col},0)`);
+  ctx.fillStyle = sg;
   ctx.fillRect(0, 0, W, H);
 
   requestAnimationFrame(frame);
