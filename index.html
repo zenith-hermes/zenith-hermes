@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zenith Hermes — AI Agent Infrastructure on Base</title>
+<meta name="description" content="Deploy, compose, and monetize autonomous AI agents with 56 modular skills. Fully on-chain on Base Network.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Zenith Hermes — AI Agent Infrastructure on Base">
+<meta property="og:description" content="Deploy, compose, and monetize autonomous AI agents with 56 modular skills. Fully on-chain on Base Network.">
+<meta property="og:url" content="https://agentpad-ernvodjf.devinapps.com">
+<meta property="og:site_name" content="Zenith Hermes">
+<meta property="og:image" content="https://app.devin.ai/attachments/a266e813-7fc2-4a88-9795-4ab7a0ee048d/screenshot_f4519aaa1b74464eb41a8b69891cdcab.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Zenith Hermes — AI Agent Infrastructure on Base">
+<meta name="twitter:description" content="Deploy, compose, and monetize autonomous AI agents with 56 modular skills. One protocol. Fully on-chain.">
+<meta name="twitter:image" content="https://app.devin.ai/attachments/a266e813-7fc2-4a88-9795-4ab7a0ee048d/screenshot_f4519aaa1b74464eb41a8b69891cdcab.png">
+<meta name="theme-color" content="#050505">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#050505;--bg-2:#0a0a0a;--bg-3:#111;
+  --surface:rgba(255,255,255,.04);--surface-hover:rgba(255,255,255,.08);
+  --surface-glass:rgba(255,255,255,.03);
+  --border:rgba(255,255,255,.1);--border-hover:rgba(255,255,255,.2);
+  --text:#fff;--text-2:rgba(255,255,255,.5);--text-3:rgba(255,255,255,.25);
+  --accent:#fff;--accent-dim:rgba(255,255,255,.7);
+  --green:#22c55e;--red:#ef4444;--amber:#f59e0b;
+  --shadow:0 8px 40px rgba(0,0,0,.6);
+  --radius:16px;--radius-sm:10px;--radius-pill:50px;
+  --font-head:'Space Grotesk',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --transition:all .3s cubic-bezier(.4,0,.2,1);
+  --logo-fill:#fff;--logo-fill-2:rgba(255,255,255,.3);--logo-fill-3:rgba(255,255,255,.12);
+  --canvas-particle:rgba(255,255,255,.4);--canvas-line:rgba(255,255,255,.18);
+  --canvas-blob-1:rgba(255,255,255,.1);--canvas-blob-2:rgba(255,255,255,.04);
+  --canvas-wave:rgba(255,255,255,.05);
+  --btn-bg:#fff;--btn-color:#000;
+  --selection-bg:#fff;--selection-color:#000;
+  --scrollbar:rgba(255,255,255,.12);
+  --inner-cut:#0a0a0a;
+}
+[data-theme="light"]{
+  --bg:#fafafa;--bg-2:#fff;--bg-3:#f0f0f0;
+  --surface:rgba(0,0,0,.04);--surface-hover:rgba(0,0,0,.07);
+  --surface-glass:rgba(0,0,0,.02);
+  --border:rgba(0,0,0,.1);--border-hover:rgba(0,0,0,.2);
+  --text:#111;--text-2:rgba(0,0,0,.5);--text-3:rgba(0,0,0,.25);
+  --accent:#111;--accent-dim:rgba(0,0,0,.7);
+  --shadow:0 8px 40px rgba(0,0,0,.1);
+  --logo-fill:#111;--logo-fill-2:rgba(0,0,0,.3);--logo-fill-3:rgba(0,0,0,.12);
+  --canvas-particle:rgba(0,0,0,.2);--canvas-line:rgba(0,0,0,.08);
+  --canvas-blob-1:rgba(0,0,0,.04);--canvas-blob-2:rgba(0,0,0,.02);
+  --canvas-wave:rgba(0,0,0,.04);
+  --btn-bg:#111;--btn-color:#fff;
+  --selection-bg:#111;--selection-color:#fff;
+  --scrollbar:rgba(0,0,0,.12);
+  --inner-cut:#fff;
+}
+
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);
+  line-height:1.6;overflow-x:hidden;min-height:100vh}
+::selection{background:var(--selection-bg);color:var(--selection-color)}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--scrollbar);border-radius:3px}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font-family:inherit;border:none;outline:none;background:none;color:inherit}
+
+/* ═══════ ANIMATED BACKGROUND CANVAS ═══════ */
+#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* Subtle noise grain */
+body::after{
+  content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
+  opacity:.5;
+}
+
+/* ═══════ NAV ═══════ */
+.nav{
+  position:fixed;top:0;left:0;width:100%;z-index:1000;
+  padding:20px 40px;display:flex;align-items:center;
+  transition:var(--transition);
+}
+.nav.scrolled{
+  background:color-mix(in srgb, var(--bg) 85%, transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);padding:14px 40px;
+}
+.nav-logo{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--font-head);font-weight:700;font-size:18px;letter-spacing:-.5px;
+}
+.logo-mark{
+  width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+}
+.theme-btn{
+  width:32px;height:32px;border-radius:8px;background:var(--surface);
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:var(--transition);font-size:16px;margin-left:8px;
+}
+.theme-btn:hover{border-color:var(--border-hover);background:var(--surface-hover)}
+.nav-links{display:flex;align-items:center;gap:28px;margin-left:auto}
+.nav-links a{font-size:13px;color:var(--text-2);transition:var(--transition);font-weight:500;letter-spacing:.2px}
+.nav-links a:hover,.nav-links a.active{color:var(--text)}
+.btn-connect{
+  padding:8px 22px;border-radius:var(--radius-pill);font-size:12px;font-weight:600;
+  background:var(--btn-bg);color:var(--btn-color);transition:var(--transition);letter-spacing:.3px;
+}
+.btn-connect:hover{opacity:.85;transform:translateY(-1px)}
+
+/* ═══════ HERO ═══════ */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:140px 40px 100px;
+  position:relative;z-index:2;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 16px;border:1px solid var(--border);border-radius:var(--radius-pill);
+  font-family:var(--font-mono);font-size:11px;color:var(--text-2);
+  margin-bottom:36px;background:var(--surface-glass);
+}
+.hero-badge .pulse{
+  width:6px;height:6px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 8px rgba(34,197,94,.5);animation:pulse-glow 2s ease infinite;
+}
+@keyframes pulse-glow{0%,100%{opacity:1}50%{opacity:.4}}
+
+.hero h1{
+  font-family:var(--font-head);font-weight:800;
+  font-size:clamp(44px,8vw,88px);line-height:1;
+  letter-spacing:-4px;margin-bottom:28px;max-width:900px;
+}
+.hero .subtitle{
+  font-size:clamp(15px,1.8vw,19px);color:var(--text-2);max-width:540px;
+  line-height:1.65;margin-bottom:44px;font-weight:400;
+}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:56px}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:8px;padding:14px 36px;
+  background:var(--btn-bg);color:var(--btn-color);border-radius:var(--radius-pill);
+  font-size:14px;font-weight:600;transition:var(--transition);letter-spacing:.3px;
+}
+.btn-primary:hover{opacity:.88;transform:translateY(-2px);box-shadow:var(--shadow)}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:8px;padding:14px 36px;
+  border:1px solid var(--border);color:var(--text-2);border-radius:var(--radius-pill);
+  font-size:14px;font-weight:500;transition:var(--transition);
+}
+.btn-secondary:hover{border-color:var(--border-hover);color:var(--text);transform:translateY(-1px)}
+
+.hero-stats{display:flex;gap:56px;flex-wrap:wrap;justify-content:center}
+.hero-stat{text-align:center}
+.hero-stat .stat-value{font-family:var(--font-head);font-size:40px;font-weight:700;letter-spacing:-1px}
+.hero-stat .stat-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--text-3);margin-top:4px}
+
+/* Scroll indicator */
+.scroll-ind{
+  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  animation:bob 3s ease infinite;
+}
+.scroll-ind .line{width:1px;height:28px;background:linear-gradient(to bottom,var(--text-3),transparent)}
+.scroll-ind span{font-family:var(--font-mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-3)}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+
+/* ═══════ SECTIONS ═══════ */
+.section{padding:120px 40px;position:relative;z-index:2;max-width:1200px;margin:0 auto}
+.section-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-mono);font-size:10px;text-transform:uppercase;
+  letter-spacing:3px;color:var(--text-3);margin-bottom:16px;
+}
+.section-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--text-3)}
+.section-title{
+  font-family:var(--font-head);font-size:clamp(30px,5vw,52px);font-weight:700;
+  letter-spacing:-2px;margin-bottom:16px;line-height:1.1;
+}
+.section-desc{font-size:17px;color:var(--text-2);max-width:500px;margin-bottom:56px;line-height:1.65}
+
+/* ═══════ FEATURE GRID ═══════ */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:var(--radius);overflow:hidden}
+.feat-cell{
+  background:var(--bg);padding:36px;transition:var(--transition);
+}
+.feat-cell:hover{background:var(--surface-hover)}
+.feat-cell .fc-num{font-family:var(--font-mono);font-size:10px;color:var(--text-3);margin-bottom:16px;letter-spacing:2px}
+.feat-cell h3{font-family:var(--font-head);font-size:17px;font-weight:600;margin-bottom:8px;letter-spacing:-.3px}
+.feat-cell p{font-size:13px;color:var(--text-2);line-height:1.55}
+
+/* ═══════ APP PREVIEW ═══════ */
+.app-wrap{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:0 40px}
+.app-frame{
+  background:var(--bg-2);border:1px solid var(--border);border-radius:16px;
+  overflow:hidden;box-shadow:var(--shadow),0 0 80px rgba(255,255,255,.02);
+}
+.app-bar{
+  display:flex;align-items:center;gap:6px;padding:12px 16px;
+  border-bottom:1px solid var(--border);background:rgba(255,255,255,.015);
+}
+.app-dot{width:9px;height:9px;border-radius:50%;border:1px solid rgba(255,255,255,.15)}
+.app-bar-title{margin-left:12px;font-family:var(--font-mono);font-size:11px;color:var(--text-3)}
+.app-body{display:flex;min-height:480px}
+
+/* Sidebar */
+.sidebar{
+  width:200px;min-width:200px;border-right:1px solid var(--border);
+  padding:20px 0;display:flex;flex-direction:column;
+}
+.sid-logo{padding:0 16px 20px;font-family:var(--font-head);font-weight:700;font-size:14px;display:flex;align-items:center;gap:7px}
+.sid-logo .sm{
+  width:20px;height:20px;border-radius:5px;border:1px solid rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;
+}
+.sid-sec{font-family:var(--font-mono);font-size:8px;text-transform:uppercase;letter-spacing:2.5px;color:var(--text-3);padding:14px 16px 4px}
+.si{
+  display:flex;align-items:center;gap:8px;padding:6px 16px;
+  font-size:12px;color:var(--text-2);cursor:default;transition:var(--transition);position:relative;
+}
+.si:hover{color:var(--text)}
+.si.active{color:var(--text)}
+.si.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:2px;height:14px;background:var(--text);border-radius:0 2px 2px 0}
+.si .ic{width:14px;text-align:center;font-size:10px;opacity:.4}
+.si.active .ic{opacity:.8}
+.si .badge{margin-left:auto;padding:1px 5px;border-radius:var(--radius-pill);font-family:var(--font-mono);font-size:7px;background:rgba(255,255,255,.12);letter-spacing:.5px;text-transform:uppercase}
+.sid-ft{margin-top:auto;padding:12px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:8px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase}
+.sid-ft .dot{width:4px;height:4px;border-radius:50%;background:var(--green);box-shadow:0 0 6px rgba(34,197,94,.5);animation:pulse-glow 2s ease infinite}
+
+/* App content */
+.app-main{flex:1;padding:20px;overflow:hidden}
+.app-main h2{font-family:var(--font-head);font-size:18px;font-weight:700;margin-bottom:4px;letter-spacing:-.5px}
+.app-main .sub{font-size:12px;color:var(--text-2);margin-bottom:20px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;transition:var(--transition)}
+.metric:hover{border-color:var(--border-hover)}
+.metric .ml{font-family:var(--font-mono);font-size:8px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-3);margin-bottom:5px}
+.metric .mv{font-family:var(--font-head);font-size:22px;font-weight:700;letter-spacing:-.5px}
+.metric .mc{font-family:var(--font-mono);font-size:9px;color:var(--green);margin-top:2px}
+.feed{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px}
+.feed h3{font-family:var(--font-head);font-size:13px;font-weight:600;margin-bottom:10px}
+.fi{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:11px}
+.fi:last-child{border-bottom:none}
+.fi .fd{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.fi .fd.g{background:var(--green)}.fi .fd.b{background:rgba(255,255,255,.4)}.fi .fd.p{background:rgba(255,255,255,.2)}
+.fi .ft{flex:1;color:var(--text-2)}.fi .ft strong{color:var(--text);font-weight:500}
+.fi .fm{font-family:var(--font-mono);font-size:9px;color:var(--text-3)}
+
+/* ═══════ SKILLS SHOWCASE ═══════ */
+.sk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:var(--radius);overflow:hidden;margin-top:40px}
+.sk-card{background:var(--bg);padding:20px;transition:var(--transition);cursor:default}
+.sk-card:hover{background:var(--surface-hover)}
+.sk-card .skn{font-weight:600;font-size:13px;margin-bottom:2px;display:flex;align-items:center;gap:6px}
+.sk-card .skp{font-family:var(--font-mono);font-size:7px;padding:1px 5px;background:rgba(255,255,255,.12);border-radius:var(--radius-pill);text-transform:uppercase;letter-spacing:.5px}
+.sk-card .skc{font-family:var(--font-mono);font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+.sk-card .skd{font-size:12px;color:var(--text-2);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* ═══════ HOW IT WORKS ═══════ */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:var(--radius);overflow:hidden}
+.step{background:var(--bg);padding:36px;transition:var(--transition)}
+.step:hover{background:var(--surface-hover)}
+.step .sn{font-family:var(--font-head);font-size:56px;font-weight:800;color:rgba(255,255,255,.06);line-height:1;margin-bottom:12px}
+.step h3{font-family:var(--font-head);font-size:16px;font-weight:600;margin-bottom:8px;letter-spacing:-.3px}
+.step p{font-size:13px;color:var(--text-2);line-height:1.55}
+
+/* ═══════ CTA ═══════ */
+.cta-section{text-align:center;padding:120px 40px;position:relative;z-index:2}
+.cta-box{
+  max-width:640px;margin:0 auto;padding:64px 48px;
+  border:1px solid var(--border);border-radius:20px;
+  background:var(--surface);
+}
+.cta-box h2{font-family:var(--font-head);font-size:36px;font-weight:700;letter-spacing:-1.5px;margin-bottom:12px}
+.cta-box p{font-size:15px;color:var(--text-2);margin-bottom:32px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6}
+
+/* ═══════ APP PAGES ═══════ */
+.app-page{display:none;animation:fadeIn .25s ease}
+.app-page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.si{cursor:pointer}
+
+/* Factory */
+.factory-steps{display:flex;gap:2px;margin-bottom:16px}
+.fstep{flex:1;padding:8px;text-align:center;font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;background:var(--surface);border-radius:var(--radius-sm);color:var(--text-3);transition:var(--transition)}
+.fstep.active{background:rgba(255,255,255,.12);color:var(--text)}
+.fstep .fsn{font-weight:700;margin-right:4px}
+.ff-group{margin-bottom:14px}
+.ff-label{display:block;font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--text-3);margin-bottom:6px}
+.ff-input{width:100%;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;color:var(--text);transition:var(--transition)}
+.ff-input:focus{border-color:var(--border-hover)}
+.template-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tpl{padding:12px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:var(--transition)}
+.tpl:hover{border-color:var(--border-hover)}
+.tpl.selected{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.06)}
+.tpl-name{font-size:12px;font-weight:600;margin-bottom:2px}
+.tpl-desc{font-size:10px;color:var(--text-2)}
+.ff-btn{width:100%;padding:10px;background:#fff;color:#000;border-radius:var(--radius-sm);font-size:12px;font-weight:600;cursor:pointer;border:none;transition:var(--transition);margin-top:8px}
+.ff-btn:hover{opacity:.85}
+.ff-btn.secondary{background:transparent;color:var(--text);border:1px solid var(--border)}
+.ff-btn.secondary:hover{border-color:var(--border-hover)}
+
+/* Registry */
+.reg-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:300px;overflow-y:auto}
+.reg-item{padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);transition:var(--transition);cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+.reg-item:hover{border-color:var(--border-hover)}
+.reg-name{font-size:11px;font-weight:600}
+.reg-cat{font-family:var(--font-mono);font-size:8px;color:var(--text-3);text-transform:uppercase;letter-spacing:1px}
+.reg-install{font-family:var(--font-mono);font-size:8px;padding:3px 8px;border-radius:var(--radius-pill);background:rgba(255,255,255,.08);color:var(--text-2);cursor:pointer;border:none;transition:var(--transition)}
+.reg-install:hover{background:rgba(255,255,255,.15);color:var(--text)}
+.reg-install.installed{background:rgba(34,197,94,.15);color:var(--green)}
+
+/* Marketplace */
+.mkt-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mkt-card{padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);transition:var(--transition);cursor:pointer}
+.mkt-card:hover{border-color:var(--border-hover)}
+.mkt-top{margin-bottom:8px}
+.mkt-price{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text)}
+.mkt-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.mkt-auth{font-size:10px;color:var(--text-3);margin-bottom:6px}
+.mkt-stat{display:flex;gap:12px;font-family:var(--font-mono);font-size:9px;color:var(--text-2)}
+
+/* Agents */
+.agents-list{display:flex;flex-direction:column;gap:8px}
+.ag-card{padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);transition:var(--transition)}
+.ag-card:hover{border-color:var(--border-hover)}
+.ag-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.ag-name{font-size:13px;font-weight:600}
+.ag-status{font-family:var(--font-mono);font-size:9px}
+.ag-status.on{color:var(--green)}.ag-status.idle{color:var(--text-3)}
+.ag-meta{display:flex;gap:12px;font-family:var(--font-mono);font-size:9px;color:var(--text-3);margin-bottom:8px}
+.ag-bar{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin-bottom:6px}
+.ag-fill{height:100%;background:rgba(255,255,255,.3);border-radius:2px;transition:width .5s ease}
+.ag-perf{font-family:var(--font-mono);font-size:10px;color:var(--text-2)}
+
+/* Analytics chart */
+.chart-placeholder{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;margin-top:12px}
+.chart-bars{display:flex;align-items:flex-end;gap:6px;height:100px;margin-bottom:8px}
+.cb{flex:1;background:rgba(255,255,255,.15);border-radius:2px 2px 0 0;transition:height .5s ease}
+.chart-label{font-family:var(--font-mono);font-size:8px;color:var(--text-3);text-transform:uppercase;letter-spacing:1.5px;text-align:center}
+
+/* Staking */
+.stake-actions{display:flex;gap:8px;margin-top:8px}
+
+/* Governance */
+.gov-list{display:flex;flex-direction:column;gap:8px}
+.gov-item{padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);transition:var(--transition)}
+.gov-item:hover{border-color:var(--border-hover)}
+.gov-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.gov-id{font-family:var(--font-mono);font-size:9px;color:var(--text-3);letter-spacing:1px}
+.gov-st{font-family:var(--font-mono);font-size:8px;padding:1px 6px;border-radius:var(--radius-pill);text-transform:uppercase;letter-spacing:.5px}
+.gov-st.active{background:rgba(34,197,94,.15);color:var(--green)}
+.gov-st.closed{background:rgba(255,255,255,.08);color:var(--text-3)}
+.gov-title{font-size:12px;font-weight:500;margin-bottom:8px}
+.gov-votes{display:flex;align-items:center;gap:8px}
+.gov-bar{flex:1;height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+.gov-yes{height:100%;background:var(--green);border-radius:2px}
+.gov-pct{font-family:var(--font-mono);font-size:9px;color:var(--text-2);white-space:nowrap}
+
+/* ═══════ EMPTY STATES ═══════ */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;min-height:200px}
+.empty-icon{font-size:28px;opacity:.25;margin-bottom:12px}
+.empty-title{font-family:var(--font-head);font-size:14px;font-weight:600;margin-bottom:6px}
+.empty-desc{font-size:11px;color:var(--text-2);max-width:280px;line-height:1.6;margin-bottom:16px}
+
+/* ═══════ SKILL CATEGORIES ═══════ */
+.reg-cats{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+.reg-cat{padding:3px 10px;background:var(--surface);border:1px solid var(--border);border-radius:12px;font-size:9px;font-family:var(--font-mono);cursor:pointer;transition:var(--transition);color:var(--text-2);white-space:nowrap}
+.reg-cat:hover,.reg-cat.active{border-color:var(--border-hover);color:var(--text);background:rgba(255,255,255,.08)}
+
+/* ═══════ PLAYGROUND ═══════ */
+.pg-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.pg-controls{display:flex;gap:6px;align-items:center}
+.pg-select{padding:5px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:10px;font-family:var(--font-mono);cursor:pointer}
+.pg-settings-btn{width:28px;height:28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-2);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:var(--transition)}
+.pg-settings-btn:hover{border-color:var(--border-hover);color:var(--text)}
+.pg-settings{padding:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:10px}
+.pg-chat{display:flex;flex-direction:column;gap:8px;max-height:280px;overflow-y:auto;padding:8px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;scroll-behavior:smooth}
+.pg-msg{display:flex;flex-direction:column;gap:2px;animation:fadeIn .3s ease}
+.pg-msg.user .pg-text{background:rgba(255,255,255,.08);align-self:flex-end;border-radius:12px 12px 2px 12px}
+.pg-msg.agent .pg-text{background:rgba(255,255,255,.04);align-self:flex-start;border-radius:12px 12px 12px 2px}
+.pg-msg.sys .pg-text{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:8px;font-size:10px;color:var(--text-2)}
+.pg-role{font-family:var(--font-mono);font-size:8px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-3);margin-bottom:1px}
+.pg-msg.user .pg-role{text-align:right}
+.pg-text{padding:8px 12px;font-size:12px;line-height:1.6;max-width:85%;word-wrap:break-word}
+.pg-text strong{color:var(--green)}
+.pg-text code{font-family:var(--font-mono);font-size:10px;background:rgba(255,255,255,.08);padding:1px 5px;border-radius:3px}
+.pg-input-bar{display:flex;gap:6px}
+.pg-input{flex:1;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:12px;transition:var(--transition)}
+.pg-input:focus{border-color:var(--border-hover)}
+.pg-send{width:38px;background:var(--btn-bg);color:var(--btn-color);border:none;border-radius:var(--radius-sm);font-size:16px;cursor:pointer;transition:var(--transition);display:flex;align-items:center;justify-content:center}
+.pg-send:hover{opacity:.85}
+.pg-typing{display:flex;gap:4px;padding:8px 12px;align-items:center}
+.pg-typing span{width:6px;height:6px;background:rgba(255,255,255,.3);border-radius:50%;animation:bounce .6s infinite alternate}
+.pg-typing span:nth-child(2){animation-delay:.15s}
+.pg-typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{to{opacity:.15;transform:translateY(-4px)}}
+
+/* ═══════ FOOTER ═══════ */
+.site-footer{padding:48px 40px 32px;border-top:1px solid var(--border);position:relative;z-index:2;max-width:1200px;margin:0 auto}
+.ft-grid{display:flex;justify-content:space-between;align-items:start;margin-bottom:32px;flex-wrap:wrap;gap:32px}
+.ft-brand .ftl{font-family:var(--font-head);font-weight:700;font-size:16px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.ft-brand .ftd{font-size:12px;color:var(--text-2);max-width:260px;line-height:1.55}
+.ft-col h4{font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:2.5px;color:var(--text-3);margin-bottom:12px}
+.ft-col a{display:block;font-size:12px;color:var(--text-2);padding:3px 0;transition:var(--transition)}
+.ft-col a:hover{color:var(--text)}
+.ft-bottom{padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:1.5px}
+
+/* ═══════ SCROLL ANIMATIONS ═══════ */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}.reveal-d4{transition-delay:.35s}
+
+/* ═══════ RESPONSIVE ═══════ */
+@media(max-width:1024px){
+  .feat-grid,.steps{grid-template-columns:repeat(2,1fr)}
+  .sk-grid{grid-template-columns:repeat(2,1fr)}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  .sidebar{display:none}
+}
+@media(max-width:768px){
+  .feat-grid,.steps,.sk-grid{grid-template-columns:1fr}
+  .metrics{grid-template-columns:1fr}
+  .hero-stats{gap:24px}
+  .ft-grid{flex-direction:column}
+  .nav-links a:not(:last-child){display:none}
+  .hero h1{letter-spacing:-2px}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-logo"><div class="logo-mark"><svg width="24" height="24" viewBox="0 0 64 64" fill="none"><path d="M32 4L52 16L32 28L12 16Z" fill="var(--logo-fill)"/><path d="M12 16L32 28L32 52L12 40Z" fill="var(--logo-fill-2)"/><path d="M52 16L32 28L32 52L52 40Z" fill="var(--logo-fill-3)"/></svg></div> Zenith Hermes</div>
+  <div class="nav-links">
+    <a href="#features" class="active">Features</a>
+    <a href="#platform">Platform</a>
+    <a href="#skills">Skills</a>
+    <a href="#how">How It Works</a>
+    <button class="btn-connect" id="connectBtn">Connect Wallet</button>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">☀</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"><span class="pulse"></span> Live on Base Network</div>
+  <h1>Deploy agents<br>that think & earn</h1>
+  <p class="subtitle">The infrastructure layer for deploying, composing, and monetizing AI agents. 56 modular skills. One protocol. Fully on-chain.</p>
+  <div class="hero-cta">
+    <button class="btn-primary" onclick="document.getElementById('platform').scrollIntoView({behavior:'smooth'})">Launch App →</button>
+    <button class="btn-secondary" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">How It Works</button>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="stat-value" data-count="0">0</div><div class="stat-label">Agents Deployed</div></div>
+    <div class="hero-stat"><div class="stat-value" data-count="56">0</div><div class="stat-label">Modular Skills</div></div>
+    <div class="hero-stat"><div class="stat-value" data-count="0">0</div><div class="stat-label">Active Users</div></div>
+    <div class="hero-stat"><div class="stat-value" data-count="0" data-prefix="$" data-suffix="">$0</div><div class="stat-label">Creator Earnings</div></div>
+  </div>
+  <div class="scroll-ind"><div class="line"></div><span>scroll</span></div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="section-tag reveal">Core Infrastructure</div>
+  <h2 class="section-title reveal">Why builders<br>choose Zenith Hermes</h2>
+  <p class="section-desc reveal">Not another wrapper. A composable protocol where agents own their skills, earn from invocations, and evolve autonomously.</p>
+  <div class="feat-grid reveal">
+    <div class="feat-cell"><div class="fc-num">01</div><h3>Modular Skills</h3><p>56 composable skills from the open ecosystem. Plug them into any agent like building blocks.</p></div>
+    <div class="feat-cell"><div class="fc-num">02</div><h3>On-Chain Provenance</h3><p>Every skill is signed, content-addressed, and registered on Base. Tamper-proof execution.</p></div>
+    <div class="feat-cell"><div class="fc-num">03</div><h3>Revenue Per Call</h3><p>Creators earn USDC every time their skill is invoked. No subscriptions. No middleman.</p></div>
+    <div class="feat-cell"><div class="fc-num">04</div><h3>Agent Templates</h3><p>Launch a trading bot, research analyst, or yield farmer in minutes. Pre-configured defaults.</p></div>
+    <div class="feat-cell"><div class="fc-num">05</div><h3>Self-Evolution</h3><p>Agents learn which skills work, drop what doesn't, and acquire new capabilities automatically.</p></div>
+    <div class="feat-cell"><div class="fc-num">06</div><h3>Security First</h3><p>Sandboxed execution, token-gated access, and formal verification for mainnet agents.</p></div>
+  </div>
+</section>
+
+<!-- PLATFORM -->
+<section class="section" id="platform">
+  <div class="section-tag reveal">Live Platform</div>
+  <h2 class="section-title reveal">The command center<br>for agent ops</h2>
+  <p class="section-desc reveal">Deploy, monitor, and manage your agent fleet from one dashboard.</p>
+  <div class="app-frame reveal">
+    <div class="app-bar">
+      <div class="app-dot"></div><div class="app-dot"></div><div class="app-dot"></div>
+      <div class="app-bar-title">zenithhermes.app — dashboard</div>
+    </div>
+    <div class="app-body">
+      <div class="sidebar">
+        <div class="sid-logo"><svg width="16" height="16" viewBox="0 0 64 64" fill="none"><path d="M32 4L52 16L32 28L12 16Z" fill="var(--logo-fill)"/><path d="M12 16L32 28L32 52L12 40Z" fill="var(--logo-fill-2)"/><path d="M52 16L32 28L32 52L52 40Z" fill="var(--logo-fill-3)"/></svg> Zenith Hermes</div>
+        <div class="sid-sec">Platform</div>
+        <div class="si active" data-page="dashboard" onclick="switchPage(this,'dashboard')"><span class="ic">◉</span> Dashboard</div>
+        <div class="si" data-page="factory" onclick="switchPage(this,'factory')"><span class="ic">⚙</span> Agent Factory <span class="badge">new</span></div>
+        <div class="si" data-page="registry" onclick="switchPage(this,'registry')"><span class="ic">◈</span> Skill Registry</div>
+        <div class="si" data-page="marketplace" onclick="switchPage(this,'marketplace')"><span class="ic">▣</span> Marketplace</div>
+        <div class="sid-sec">Management</div>
+        <div class="si" data-page="agents" onclick="switchPage(this,'agents')"><span class="ic">◧</span> My Agents</div>
+        <div class="si" data-page="analytics" onclick="switchPage(this,'analytics')"><span class="ic">◫</span> Analytics</div>
+        <div class="si" data-page="staking" onclick="switchPage(this,'staking')"><span class="ic">⬡</span> Staking</div>
+        <div class="si" data-page="governance" onclick="switchPage(this,'governance')"><span class="ic">⬢</span> Governance</div>
+        <div class="sid-sec">Tools</div>
+        <div class="si" data-page="playground" onclick="switchPage(this,'playground')"><span class="ic">▶</span> Playground <span class="badge">live</span></div>
+        <div class="sid-ft"><span class="dot"></span> Base Mainnet</div>
+      </div>
+      <div class="app-main" id="appMain">
+        <!-- Dashboard page (default) -->
+        <div class="app-page active" id="page-dashboard">
+          <h2>Dashboard</h2>
+          <div class="sub">Your agent fleet at a glance</div>
+          <div class="metrics">
+            <div class="metric"><div class="ml">Active Agents</div><div class="mv" id="dashAgents">0</div><div class="mc">no agents yet</div></div>
+            <div class="metric"><div class="ml">Skills Available</div><div class="mv">56</div><div class="mc">8 categories</div></div>
+            <div class="metric"><div class="ml">Total Earned</div><div class="mv" id="dashEarned">$0</div><div class="mc">connect wallet</div></div>
+            <div class="metric"><div class="ml">Uptime</div><div class="mv">—</div><div class="mc">no agents</div></div>
+          </div>
+          <div class="feed" id="dashFeed">
+            <h3>Recent Activity</h3>
+            <div class="fi"><span class="fd b"></span><span class="ft">No activity yet. Deploy your first agent via <strong>Agent Factory</strong> to get started.</span></div>
+          </div>
+        </div>
+
+        <!-- Agent Factory page -->
+        <div class="app-page" id="page-factory">
+          <h2>Agent Factory</h2>
+          <div class="sub">Create a new autonomous agent in 3 steps</div>
+          <div class="factory-steps">
+            <div class="fstep active" id="fs1"><span class="fsn">1</span> Configure</div>
+            <div class="fstep" id="fs2"><span class="fsn">2</span> Skills</div>
+            <div class="fstep" id="fs3"><span class="fsn">3</span> Deploy</div>
+          </div>
+          <div class="factory-form" id="factoryContent">
+            <div class="ff-group"><label class="ff-label">Agent Name</label><input type="text" class="ff-input" placeholder="e.g. Alpha Scout" id="agentNameInput"></div>
+            <div class="ff-group"><label class="ff-label">Template</label>
+              <div class="template-grid">
+                <div class="tpl selected" onclick="selectTpl(this)"><div class="tpl-name">Trading Bot</div><div class="tpl-desc">Execute swaps & monitor prices</div></div>
+                <div class="tpl" onclick="selectTpl(this)"><div class="tpl-name">Research Analyst</div><div class="tpl-desc">Aggregate data & publish briefs</div></div>
+                <div class="tpl" onclick="selectTpl(this)"><div class="tpl-name">Yield Farmer</div><div class="tpl-desc">Optimize DeFi positions</div></div>
+                <div class="tpl" onclick="selectTpl(this)"><div class="tpl-name">Content Engine</div><div class="tpl-desc">Generate posts from data</div></div>
+              </div>
+            </div>
+            <button class="ff-btn" onclick="factoryNext()">Next → Select Skills</button>
+          </div>
+        </div>
+
+        <!-- Skill Registry page -->
+        <div class="app-page" id="page-registry">
+          <h2>Skill Registry</h2>
+          <div class="sub">Browse and install verified skills for your agents</div>
+          <input type="text" class="ff-input" placeholder="Search 56 skills..." style="margin-bottom:10px" id="regSearch" oninput="filterRegistry()">
+          <div class="reg-cats" id="regCats"></div>
+          <div class="reg-grid" id="regGrid" style="max-height:240px"></div>
+          <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-3);text-align:center;margin-top:8px;letter-spacing:1px">SHOWING <span id="regCount">0</span> OF 56 VERIFIED SKILLS</div>
+        </div>
+
+        <!-- Marketplace page -->
+        <div class="app-page" id="page-marketplace">
+          <h2>Marketplace</h2>
+          <div class="sub">Discover and acquire premium agent templates</div>
+          <div class="empty-state">
+            <div class="empty-icon">▣</div>
+            <div class="empty-title">Marketplace coming soon</div>
+            <div class="empty-desc">Premium agent templates and skill packs will be available here. Create and sell your own agent templates.</div>
+          </div>
+        </div>
+
+        <!-- My Agents page -->
+        <div class="app-page" id="page-agents">
+          <h2>My Agents</h2>
+          <div class="sub">Manage your deployed agent fleet</div>
+          <div class="empty-state">
+            <div class="empty-icon">◧</div>
+            <div class="empty-title">No agents deployed yet</div>
+            <div class="empty-desc">Connect your wallet and deploy your first agent via Agent Factory</div>
+            <button class="ff-btn" style="width:auto;padding:8px 24px" onclick="switchPage(document.querySelector('[data-page=factory]'),'factory')">Go to Agent Factory →</button>
+          </div>
+        </div>
+
+        <!-- Analytics page -->
+        <div class="app-page" id="page-analytics">
+          <h2>Analytics</h2>
+          <div class="sub">Performance metrics across your fleet</div>
+          <div class="empty-state">
+            <div class="empty-icon">◫</div>
+            <div class="empty-title">No analytics data yet</div>
+            <div class="empty-desc">Deploy agents and start earning to see performance metrics, PnL charts, and invocation stats here.</div>
+            <button class="ff-btn" style="width:auto;padding:8px 24px" onclick="switchPage(document.querySelector('[data-page=factory]'),'factory')">Deploy First Agent →</button>
+          </div>
+        </div>
+
+        <!-- Staking page -->
+        <div class="app-page" id="page-staking">
+          <h2>Staking</h2>
+          <div class="sub">Stake $ZNH tokens to earn protocol revenue</div>
+          <div class="empty-state">
+            <div class="empty-icon">⬡</div>
+            <div class="empty-title">Connect wallet to stake</div>
+            <div class="empty-desc">Stake $ZNH tokens to earn a share of protocol revenue. APY is variable based on total stake.</div>
+            <button class="ff-btn" style="width:auto;padding:8px 24px" onclick="connectWallet()">Connect Wallet</button>
+          </div>
+        </div>
+
+        <!-- Governance page -->
+        <div class="app-page" id="page-governance">
+          <h2>Governance</h2>
+          <div class="sub">Vote on protocol proposals with your staked $ZNH</div>
+          <div class="empty-state">
+            <div class="empty-icon" style="font-size:32px">⬢</div>
+            <div class="empty-title">Coming Soon</div>
+            <div class="empty-desc">On-chain governance is under development. Stake $ZNH to earn voting power when governance launches.</div>
+          </div>
+        </div>
+        <!-- Playground page -->
+        <div class="app-page" id="page-playground">
+          <div class="pg-header">
+            <div><h2>Playground</h2><div class="sub">Chat with your AI agent in real-time</div></div>
+            <div class="pg-controls">
+              <select class="pg-select" id="pgModel">
+                <option>Alpha Hunter (Trading)</option>
+                <option>DeFi Sentinel (Monitor)</option>
+                <option>Research Bot (Analyst)</option>
+                <option>Custom Agent</option>
+              </select>
+              <button class="pg-settings-btn" onclick="togglePgSettings()" title="API Settings">⚙</button>
+            </div>
+          </div>
+          <div class="pg-settings" id="pgSettings" style="display:none">
+            <div class="ff-label">Connect to FreeLLMAPI or any OpenAI-compatible endpoint</div>
+            <div class="ff-group" style="margin-bottom:8px"><label class="ff-label">API Endpoint</label><input type="text" class="ff-input" id="pgEndpoint" placeholder="http://localhost:3001/v1/chat/completions"></div>
+            <div class="ff-group" style="margin-bottom:8px"><label class="ff-label">API Key</label><input type="password" class="ff-input" id="pgApiKey" placeholder="freellmapi-... or sk-..."></div>
+            <div style="display:flex;gap:6px"><button class="ff-btn" style="flex:1" onclick="savePgSettings()">Save & Connect</button><button class="ff-btn secondary" style="flex:1" onclick="togglePgSettings()">Cancel</button></div>
+          </div>
+          <div class="pg-chat" id="pgChat">
+            <div class="pg-msg sys"><span class="pg-role">zenith hermes</span><div class="pg-text">Welcome to Zenith Hermes. Ask me anything — DeFi, trading, market analysis, or agent management. I'm ready.</div></div>
+          </div>
+          <div class="pg-input-bar">
+            <input type="text" class="pg-input" id="pgInput" placeholder="Ask your agent anything..." onkeydown="if(event.key==='Enter')sendPgMsg()">
+            <button class="pg-send" onclick="sendPgMsg()">→</button>
+          </div>
+        </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="section" id="skills">
+  <div class="section-tag reveal">Skill Ecosystem</div>
+  <h2 class="section-title reveal">56 skills.<br>Infinite combinations.</h2>
+  <p class="section-desc reveal">From DeFi protocols to AI models, data feeds to social platforms. Every skill is verified and composable.</p>
+  <div class="sk-grid reveal" id="skillsGrid"></div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="section-tag reveal">The Protocol</div>
+  <h2 class="section-title reveal">From zero to<br>autonomous agent</h2>
+  <p class="section-desc reveal">Four steps to deploy an agent that earns, learns, and evolves on its own.</p>
+  <div class="steps reveal">
+    <div class="step"><div class="sn">01</div><h3>Configure</h3><p>Name your agent, pick a template, and set parameters. Takes 30 seconds.</p></div>
+    <div class="step"><div class="sn">02</div><h3>Equip Skills</h3><p>Browse 56 skills. Search, filter by category, select what your agent needs.</p></div>
+    <div class="step"><div class="sn">03</div><h3>Deploy</h3><p>One click. Your agent deploys to Base L2, signed and registered on-chain.</p></div>
+    <div class="step"><div class="sn">04</div><h3>Earn & Evolve</h3><p>Your agent runs autonomously, earning USDC per invocation. It learns and adapts.</p></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-box reveal">
+    <h2>Ready to build?</h2>
+    <p>Deploy your first autonomous agent in under 60 seconds.</p>
+    <button class="btn-primary" onclick="document.getElementById('platform').scrollIntoView({behavior:'smooth'})">Launch App →</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="ft-grid">
+    <div class="ft-brand">
+      <div class="ftl"><svg width="18" height="18" viewBox="0 0 64 64" fill="none"><path d="M32 4L52 16L32 28L12 16Z" fill="var(--logo-fill)"/><path d="M12 16L32 28L32 52L12 40Z" fill="var(--logo-fill-2)"/><path d="M52 16L32 28L32 52L52 40Z" fill="var(--logo-fill-3)"/></svg> Zenith Hermes</div>
+      <div class="ftd">Autonomous agent infrastructure on Base. Build, deploy, and monetize AI agents with composable skills.</div>
+    </div>
+    <div class="ft-col"><h4>Platform</h4><a href="#">Dashboard</a><a href="#">Agent Factory</a><a href="#">Skill Registry</a><a href="#">Marketplace</a></div>
+    <div class="ft-col"><h4>Resources</h4><a href="docs.html">Documentation</a><a href="whitepaper.html">Whitepaper</a><a href="#">GitHub</a><a href="#">API Reference</a></div>
+    <div class="ft-col"><h4>Community</h4><a href="#">Discord</a><a href="#">Twitter/X</a><a href="#">Telegram</a><a href="#">Forum</a></div>
+  </div>
+  <div class="ft-bottom"><span>Zenith Hermes Protocol · 2025</span><span>Built on Base L2</span></div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   AMBIENT GLOW — premium minimal background
+   Soft gradient orbs drift slowly. A fine dot-grid gives
+   subtle texture. One gentle light sweep crosses occasionally.
+   Clean, elegant, never crowded.
+   ═══════════════════════════════════════════════════════════ */
+(function(){
+const c = document.getElementById('bgCanvas');
+const ctx = c.getContext('2d');
+let W, H, t = 0;
+
+function resize(){ W = c.width = window.innerWidth; H = c.height = window.innerHeight; }
+window.addEventListener('resize', resize); resize();
+
+/* ── 3 gradient orbs — large, slow, visible but not loud ── */
+const orbs = [
+  { x: .18, y: .22, r: .5, px: 0, py: 0, sx: .00025, sy: .0002 },
+  { x: .78, y: .6, r: .45, px: 1.8, py: 2.4, sx: .0002, sy: .00025 },
+  { x: .45, y: .82, r: .38, px: 3.2, py: 1.0, sx: .0003, sy: .00018 },
+];
+
+/* ── Light sweep — a slow diagonal bar of light ── */
+let sweepX = -0.3;
+const SWEEP_SPEED = .00015;
+
+function frame(){
+  t++;
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const col = isLight ? '0,0,0' : '255,255,255';
+
+  ctx.fillStyle = isLight ? '#fafafa' : '#050505';
+  ctx.fillRect(0, 0, W, H);
+
+  /* ── Gradient orbs ── */
+  for(const o of orbs){
+    o.px += o.sx;
+    o.py += o.sy;
+    const ox = (o.x + Math.sin(o.px) * .1) * W;
+    const oy = (o.y + Math.cos(o.py) * .08) * H;
+    const or_ = o.r * Math.max(W, H);
+
+    const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, or_);
+    const a0 = isLight ? .03 : .06;
+    const a1 = isLight ? .01 : .02;
+    g.addColorStop(0, `rgba(${col},${a0})`);
+    g.addColorStop(.45, `rgba(${col},${a1})`);
+    g.addColorStop(1, `rgba(${col},0)`);
+    ctx.fillStyle = g;
+    ctx.fillRect(ox - or_, oy - or_, or_ * 2, or_ * 2);
+  }
+
+  /* ── Dot grid — fixed positions, pulse opacity ── */
+  const spacing = 80;
+  const dotAlphaBase = isLight ? .04 : .06;
+  const pulse = .5 + Math.sin(t * .008) * .5;
+  ctx.fillStyle = `rgba(${col},${dotAlphaBase * (.3 + pulse * .7)})`;
+  for(let gx = spacing / 2; gx < W; gx += spacing){
+    for(let gy = spacing / 2; gy < H; gy += spacing){
+      ctx.fillRect(gx - .5, gy - .5, 1, 1);
+    }
+  }
+
+  /* ── Light sweep — diagonal bar traversing screen ── */
+  sweepX += SWEEP_SPEED;
+  if(sweepX > 1.5) sweepX = -.5;
+
+  const sx = sweepX * W;
+  const sw = W * .25;
+  const sweepGrad = ctx.createLinearGradient(sx - sw, 0, sx + sw, 0);
+  const sa = isLight ? .015 : .025;
+  sweepGrad.addColorStop(0, `rgba(${col},0)`);
+  sweepGrad.addColorStop(.4, `rgba(${col},${sa})`);
+  sweepGrad.addColorStop(.5, `rgba(${col},${sa * 1.2})`);
+  sweepGrad.addColorStop(.6, `rgba(${col},${sa})`);
+  sweepGrad.addColorStop(1, `rgba(${col},0)`);
+  ctx.fillStyle = sweepGrad;
+  ctx.fillRect(0, 0, W, H);
+
+  requestAnimationFrame(frame);
+}
+frame();
+})();
+
+/* NAV SCROLL */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+/* COUNTER ANIMATION */
+function animateCounters(){
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const target = +el.dataset.count;
+    const pre = el.dataset.prefix || '';
+    const suf = el.dataset.suffix || '';
+    let cur = 0;
+    const step = Math.max(1, Math.ceil(target / 45));
+    const iv = setInterval(() => {
+      cur += step;
+      if(cur >= target){ cur = target; clearInterval(iv); }
+      el.textContent = pre + cur.toLocaleString() + suf;
+    }, 28);
+  });
+}
+setTimeout(animateCounters, 400);
+
+/* SCROLL REVEAL */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold: .08});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+/* ═══════ API CONNECTION ═══════ */
+async function apiGet(path){
+  const r = await fetch(path);
+  if(!r.ok) throw new Error(`API ${r.status}`);
+  return r.json();
+}
+async function apiPost(path, body){
+  const r = await fetch(path, {
+    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)
+  });
+  if(!r.ok) throw new Error(`API ${r.status}`);
+  return r.json();
+}
+async function apiPatch(path, body){
+  const r = await fetch(path, {
+    method:'PATCH', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)
+  });
+  if(!r.ok) throw new Error(`API ${r.status}`);
+  return r.json();
+}
+async function apiDelete(path){
+  const r = await fetch(path, {method:'DELETE'});
+  if(!r.ok) throw new Error(`API ${r.status}`);
+  return r.json();
+}
+
+/* ═══════ REAL WALLET CONNECTION ═══════ */
+let walletAddress = null;
+let walletChainId = null;
+const BASE_CHAIN_ID = '0x2105'; // Base Mainnet = 8453
+
+async function connectWallet(){
+  const btn = document.getElementById('connectBtn');
+  if(walletAddress){
+    // Already connected — disconnect
+    walletAddress = null;
+    walletChainId = null;
+    btn.textContent = 'Connect Wallet';
+    btn.style.background = 'var(--btn-bg)';
+    btn.style.border = 'none';
+    btn.style.color = 'var(--btn-color)';
+    onWalletDisconnect();
+    return;
+  }
+
+  if(!window.ethereum){
+    alert('No wallet detected. Please install MetaMask or another Web3 wallet.');
+    window.open('https://metamask.io/download/', '_blank');
+    return;
+  }
+
+  try{
+    btn.textContent = 'Connecting...';
+    const accounts = await window.ethereum.request({method:'eth_requestAccounts'});
+    if(accounts.length === 0) throw new Error('No account selected');
+    walletAddress = accounts[0];
+    walletChainId = await window.ethereum.request({method:'eth_chainId'});
+
+    // Try to switch to Base
+    if(walletChainId !== BASE_CHAIN_ID){
+      try{
+        await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:BASE_CHAIN_ID}]});
+        walletChainId = BASE_CHAIN_ID;
+      }catch(switchErr){
+        if(switchErr.code === 4902){
+          await window.ethereum.request({method:'wallet_addEthereumChain',params:[{
+            chainId:BASE_CHAIN_ID,
+            chainName:'Base',
+            nativeCurrency:{name:'Ether',symbol:'ETH',decimals:18},
+            rpcUrls:['https://mainnet.base.org'],
+            blockExplorerUrls:['https://basescan.org']
+          }]});
+          walletChainId = BASE_CHAIN_ID;
+        }
+      }
+    }
+
+    // Update UI
+    const short = walletAddress.slice(0,6) + '...' + walletAddress.slice(-4);
+    btn.textContent = short;
+    btn.style.background = 'transparent';
+    btn.style.border = '1px solid rgba(255,255,255,.2)';
+    btn.style.color = '#fff';
+    onWalletConnect();
+
+    // Listen for account/chain changes
+    window.ethereum.on('accountsChanged', function(accs){
+      if(accs.length === 0){ walletAddress = null; onWalletDisconnect(); btn.textContent='Connect Wallet'; btn.style.background='#fff'; btn.style.border='none'; btn.style.color='#000'; }
+      else{ walletAddress = accs[0]; const s = walletAddress.slice(0,6)+'...'+walletAddress.slice(-4); btn.textContent=s; onWalletConnect(); }
+    });
+    window.ethereum.on('chainChanged', function(cid){ walletChainId = cid; });
+
+  }catch(err){
+    console.error('Wallet connection failed:', err);
+    btn.textContent = 'Connect Wallet';
+    if(err.code !== 4001) alert('Connection failed: ' + (err.message || 'Unknown error'));
+  }
+}
+
+async function onWalletConnect(){
+  // Register wallet with backend
+  try{
+    await apiPost('/api/users/connect', { wallet_address: walletAddress });
+  }catch(e){ console.warn('API connect:', e); }
+
+  // Load dashboard stats from backend
+  try{
+    const stats = await apiGet('/api/dashboard?wallet=' + walletAddress);
+    const dashPage = document.getElementById('page-dashboard');
+    if(dashPage){
+      const metrics = dashPage.querySelectorAll('.mv');
+      if(metrics.length >= 4){
+        metrics[0].textContent = stats.total_agents;
+        metrics[1].textContent = stats.total_skills;
+        metrics[2].textContent = '$' + stats.total_earned.toFixed(2);
+        metrics[3].textContent = stats.active_agents;
+      }
+    }
+  }catch(e){ console.warn('Dashboard stats:', e); }
+
+  // Load user's agents from backend
+  try{
+    const agents = await apiGet('/api/agents?wallet=' + walletAddress);
+    const agentsPage = document.getElementById('page-agents');
+    if(agentsPage){
+      if(agents.length === 0){
+        agentsPage.innerHTML = `
+          <h2>My Agents</h2>
+          <div class="sub">Manage your deployed agent fleet</div>
+          <div class="empty-state">
+            <div class="empty-icon">◧</div>
+            <div class="empty-title">No agents deployed yet</div>
+            <div class="empty-desc">Wallet connected (${walletAddress.slice(0,6)}...${walletAddress.slice(-4)}). Deploy your first agent via Agent Factory.</div>
+            <button class="ff-btn" style="width:auto;padding:8px 24px" onclick="switchPage(document.querySelector('[data-page=factory]'),'factory')">Go to Agent Factory →</button>
+          </div>`;
+      } else {
+        let html = `<h2>My Agents</h2><div class="sub">${agents.length} agent(s) deployed</div><div class="metrics">`;
+        for(const a of agents){
+          html += `<div class="metric" style="cursor:pointer">
+            <div class="ml">${a.name}</div>
+            <div class="mv" style="font-size:13px">${a.status}</div>
+            <div class="mc">${a.template} · ${a.skills.length} skills</div>
+          </div>`;
+        }
+        html += '</div>';
+        agentsPage.innerHTML = html;
+      }
+    }
+  }catch(e){ console.warn('Agents load:', e); }
+
+  // Update staking page
+  const stakingPage = document.getElementById('page-staking');
+  if(stakingPage){
+    stakingPage.innerHTML = `
+      <h2>Staking</h2>
+      <div class="sub">Stake $ZNH tokens to earn protocol revenue</div>
+      <div class="metrics">
+        <div class="metric"><div class="ml">Your Stake</div><div class="mv">0 $ZNH</div><div class="mc">no tokens staked</div></div>
+        <div class="metric"><div class="ml">APY</div><div class="mv">—</div><div class="mc">variable rate</div></div>
+        <div class="metric"><div class="ml">Rewards</div><div class="mv">$0</div><div class="mc">nothing to claim</div></div>
+        <div class="metric"><div class="ml">Wallet</div><div class="mv" style="font-size:11px">${walletAddress.slice(0,6)}...${walletAddress.slice(-4)}</div><div class="mc">connected</div></div>
+      </div>
+      <div style="margin-top:16px;padding:12px;border-radius:8px;background:var(--bg-2);font-size:11px;color:var(--text-2)">
+        <div style="font-weight:600;margin-bottom:8px;color:var(--text-1)">Base Sepolia Contracts (Testnet)</div>
+        <div style="display:grid;gap:4px;font-family:'JetBrains Mono',monospace;word-break:break-all">
+          <div>ZNH Token: <a href="https://sepolia.basescan.org/address/0x05372b6850FFA3aed775B643AB9537fB8d1bBD1D" target="_blank" style="color:var(--accent)">0x0537...BD1D</a></div>
+          <div>Agent Registry: <a href="https://sepolia.basescan.org/address/0xcF0609e151F2bD004Ac38644dC9343990467F09C" target="_blank" style="color:var(--accent)">0xcF06...F09C</a></div>
+          <div>Skill Registry: <a href="https://sepolia.basescan.org/address/0xEf2Cc3eAb6BAebB0035720e3f60628Ee943bA314" target="_blank" style="color:var(--accent)">0xEf2C...A314</a></div>
+          <div>Staking: <a href="https://sepolia.basescan.org/address/0xa960897e25C126D0fF44Ed06a2a26Fad3BEe85Dc" target="_blank" style="color:var(--accent)">0xa960...85Dc</a></div>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function onWalletDisconnect(){
+  // Reset staking page
+  const stakingPage = document.getElementById('page-staking');
+  if(stakingPage){
+    stakingPage.innerHTML = `
+      <h2>Staking</h2>
+      <div class="sub">Stake $ZNH tokens to earn protocol revenue</div>
+      <div class="empty-state">
+        <div class="empty-icon">⬡</div>
+        <div class="empty-title">Connect wallet to stake</div>
+        <div class="empty-desc">Stake $ZNH tokens to earn a share of protocol revenue. APY is variable based on total stake.</div>
+        <button class="ff-btn" style="width:auto;padding:8px 24px" onclick="connectWallet()">Connect Wallet</button>
+      </div>
+    `;
+  }
+  // Reset My Agents page
+  const agentsPage = document.getElementById('page-agents');
+  if(agentsPage){
+    agentsPage.innerHTML = `
+      <h2>My Agents</h2>
+      <div class="sub">Manage your deployed agent fleet</div>
+      <div class="empty-state">
+        <div class="empty-icon">◧</div>
+        <div class="empty-title">No agents deployed yet</div>
+        <div class="empty-desc">Connect your wallet and deploy your first agent via Agent Factory</div>
+        <button class="ff-btn" style="width:auto;padding:8px 24px" onclick="switchPage(document.querySelector('[data-page=factory]'),'factory')">Go to Agent Factory →</button>
+      </div>
+    `;
+  }
+}
+
+document.getElementById('connectBtn').addEventListener('click', connectWallet);
+
+/* ═══════ DARK/LIGHT THEME TOGGLE ═══════ */
+function toggleTheme(){
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  document.getElementById('themeBtn').textContent = next === 'light' ? '\u263E' : '\u2600';
+  localStorage.setItem('zenith-theme', next);
+}
+// Load saved theme
+(function(){
+  const saved = localStorage.getItem('zenith-theme');
+  if(saved === 'light'){
+    document.documentElement.setAttribute('data-theme','light');
+    const tb = document.getElementById('themeBtn');
+    if(tb) tb.textContent = '\u263E';
+  }
+})();
+
+/* SKILLS SHOWCASE */
+const skills = [
+  {n:'Uniswap V3 Swap',c:'DEFI',d:'Execute token swaps via Uniswap with optimal routing and slippage protection.',p:1},
+  {n:'GPT-4o Chat',c:'AI / LLM',d:'Natural language conversation and reasoning with OpenAI GPT-4o model.',p:1},
+  {n:'CoinGecko Price',c:'DATA',d:'Real-time crypto price feeds, market data, and historical charts.',p:1},
+  {n:'Aave Lending',c:'DEFI',d:'Supply and borrow assets on Aave V3 with automated position management.',p:1},
+  {n:'Twitter Post',c:'SOCIAL',d:'Post tweets, threads, and engage with audiences programmatically.'},
+  {n:'Chainlink Feed',c:'ORACLE',d:'Decentralized price oracle data for on-chain applications.'},
+  {n:'Claude Sonnet',c:'AI / LLM',d:'Advanced reasoning and analysis with Anthropic Claude 3.5 Sonnet.'},
+  {n:'DexScreener',c:'DATA',d:'DEX pair analytics, charts, and real-time trading data aggregation.'},
+  {n:'ERC-20 Transfer',c:'BLOCKCHAIN',d:'Send ERC-20 tokens on any EVM chain with gas optimization.'},
+  {n:'Telegram Bot',c:'SOCIAL',d:'Telegram messaging, alerts, and group moderation automation.'},
+  {n:'The Graph Query',c:'DATA',d:'Query subgraphs for indexed on-chain data across protocols.'},
+  {n:'Safe{Wallet}',c:'SECURITY',d:'Multi-sig wallet operations and secure transaction execution.'},
+];
+document.getElementById('skillsGrid').innerHTML = skills.map(s =>
+  `<div class="sk-card"><div class="skn">${s.n} ${s.p?'<span class="skp">Popular</span>':''}</div><div class="skc">${s.c}</div><div class="skd">${s.d}</div></div>`
+).join('');
+
+/* ═══════ APP PAGE SWITCHING ═══════ */
+function switchPage(el, pageId){
+  // Update sidebar active state
+  document.querySelectorAll('.si').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  // Update title bar
+  document.querySelector('.app-bar-title').textContent = 'zenithhermes.app — ' + pageId;
+  // Switch page
+  document.querySelectorAll('.app-page').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById('page-' + pageId);
+  if(page) page.classList.add('active');
+}
+
+/* TEMPLATE SELECTOR */
+function selectTpl(el){
+  document.querySelectorAll('.tpl').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+/* FACTORY WIZARD */
+let factoryStep = 1;
+let factoryData = {name:'', template:'Trading Bot', selectedSkills:[]};
+let factoryCatFilter = null;
+
+function factoryGoTo(step){
+  // Save current data before navigating
+  if(factoryStep === 1){
+    factoryData.name = document.getElementById('agentNameInput')?.value || '';
+    const sel = document.querySelector('.tpl.selected .tpl-name');
+    if(sel) factoryData.template = sel.textContent;
+  }
+  if(factoryStep === 2){
+    factoryData.selectedSkills = [];
+    document.querySelectorAll('#factorySkillGrid .reg-item.selected').forEach(el => {
+      factoryData.selectedSkills.push(el.querySelector('.reg-name').textContent);
+    });
+  }
+  factoryStep = step;
+  document.querySelectorAll('.fstep').forEach((f,i) => f.classList.toggle('active', i < factoryStep));
+  renderFactoryStep();
+}
+
+function factoryNext(){
+  factoryGoTo(factoryStep + 1);
+}
+function factoryBack(){
+  if(factoryStep > 1) factoryGoTo(factoryStep - 1);
+}
+
+function renderFactoryStep(){
+  const fc = document.getElementById('factoryContent');
+  if(factoryStep === 1){
+    fc.innerHTML = `
+      <div class="ff-group"><label class="ff-label">Agent Name</label><input type="text" class="ff-input" placeholder="e.g. Alpha Scout" id="agentNameInput" value="${factoryData.name}"></div>
+      <div class="ff-group"><label class="ff-label">Template</label>
+        <div class="template-grid">
+          <div class="tpl ${factoryData.template==='Trading Bot'?'selected':''}" onclick="selectTpl(this)"><div class="tpl-name">Trading Bot</div><div class="tpl-desc">Execute swaps & monitor prices</div></div>
+          <div class="tpl ${factoryData.template==='Research Analyst'?'selected':''}" onclick="selectTpl(this)"><div class="tpl-name">Research Analyst</div><div class="tpl-desc">Aggregate data & publish briefs</div></div>
+          <div class="tpl ${factoryData.template==='Yield Farmer'?'selected':''}" onclick="selectTpl(this)"><div class="tpl-name">Yield Farmer</div><div class="tpl-desc">Optimize DeFi positions</div></div>
+          <div class="tpl ${factoryData.template==='Content Engine'?'selected':''}" onclick="selectTpl(this)"><div class="tpl-name">Content Engine</div><div class="tpl-desc">Generate posts from data</div></div>
+        </div>
+      </div>
+      <button class="ff-btn" onclick="factoryNext()">Next → Select Skills</button>
+    `;
+  } else if(factoryStep === 2){
+    factoryCatFilter = null;
+    fc.innerHTML = `
+      <div class="ff-label">Select skills for your agent <span style="color:var(--text-3);font-size:9px">(${factoryData.selectedSkills.length} selected)</span></div>
+      <input type="text" class="ff-input" placeholder="Search skills..." style="margin-bottom:8px" id="factorySkillSearch" oninput="renderFactorySkills()">
+      <div class="reg-cats" id="factoryCats"></div>
+      <div class="reg-grid" id="factorySkillGrid" style="max-height:180px"></div>
+      <div style="display:flex;gap:6px;margin-top:10px">
+        <button class="ff-btn secondary" style="flex:1" onclick="factoryBack()">← Back</button>
+        <button class="ff-btn" style="flex:2" onclick="factoryNext()">Next → Review & Deploy</button>
+      </div>
+    `;
+    renderFactoryCats();
+    renderFactorySkills();
+  } else if(factoryStep === 3){
+    if(factoryStep === 3 && factoryData.name === ''){
+      factoryData.name = 'Alpha Scout';
+    }
+    const selCount = factoryData.selectedSkills.length;
+    fc.innerHTML = `
+      <div class="feed" style="margin-bottom:12px">
+        <h3>Deploy Summary</h3>
+        <div class="fi"><span class="fd b"></span><span class="ft">Agent: <strong>${factoryData.name}</strong></span></div>
+        <div class="fi"><span class="fd b"></span><span class="ft">Template: <strong>${factoryData.template}</strong></span></div>
+        <div class="fi"><span class="fd b"></span><span class="ft">Skills: <strong>${selCount} selected</strong></span></div>
+        <div class="fi"><span class="fd b"></span><span class="ft">Network: <strong>Base L2</strong></span></div>
+        <div class="fi"><span class="fd b"></span><span class="ft">Gas est: <strong>~0.001 ETH</strong></span></div>
+      </div>
+      ${selCount > 0 ? `<div style="font-size:10px;color:var(--text-2);margin-bottom:10px;font-family:var(--font-mono)">${factoryData.selectedSkills.join(' · ')}</div>` : ''}
+      <div style="display:flex;gap:6px">
+        <button class="ff-btn secondary" style="flex:1" onclick="factoryBack()">← Back</button>
+        <button class="ff-btn" style="flex:2" onclick="deployAgent()">Deploy to Base →</button>
+      </div>
+    `;
+  }
+}
+
+function renderFactoryCats(){
+  const cats = [...new Set(regSkills.map(s=>s.c))];
+  const el = document.getElementById('factoryCats');
+  if(!el) return;
+  el.innerHTML = `<div class="reg-cat active" onclick="factoryCatFilter=null;document.querySelectorAll('#factoryCats .reg-cat').forEach(c=>c.classList.remove('active'));this.classList.add('active');renderFactorySkills()">All</div>` +
+    cats.map(c => `<div class="reg-cat" onclick="factoryCatFilter='${c}';document.querySelectorAll('#factoryCats .reg-cat').forEach(c=>c.classList.remove('active'));this.classList.add('active');renderFactorySkills()">${c}</div>`).join('');
+}
+
+function renderFactorySkills(){
+  const grid = document.getElementById('factorySkillGrid');
+  if(!grid) return;
+  const search = (document.getElementById('factorySkillSearch')?.value || '').toLowerCase();
+  const filtered = regSkills.filter(s => {
+    const matchSearch = !search || s.n.toLowerCase().includes(search) || s.c.toLowerCase().includes(search);
+    const matchCat = !factoryCatFilter || s.c === factoryCatFilter;
+    return matchSearch && matchCat;
+  });
+  grid.innerHTML = filtered.map(s => {
+    const isSel = factoryData.selectedSkills.includes(s.n);
+    return `<div class="reg-item ${isSel?'selected':''}" onclick="toggleFactorySkill(this,'${s.n.replace(/'/g,"\\'")}')" style="flex-direction:column;align-items:flex-start;cursor:pointer;${isSel?'border-color:rgba(255,255,255,.4)':''}"><div class="reg-name">${s.n}</div><div class="reg-cat">${s.c}</div></div>`;
+  }).join('');
+  // Update counter
+  const label = document.querySelector('#factoryContent .ff-label span');
+  if(label) label.textContent = `(${factoryData.selectedSkills.length} selected)`;
+}
+
+function toggleFactorySkill(el, name){
+  const idx = factoryData.selectedSkills.indexOf(name);
+  if(idx > -1){
+    factoryData.selectedSkills.splice(idx, 1);
+    el.classList.remove('selected');
+    el.style.borderColor = '';
+  } else {
+    factoryData.selectedSkills.push(name);
+    el.classList.add('selected');
+    el.style.borderColor = 'rgba(255,255,255,.4)';
+  }
+  const label = document.querySelector('#factoryContent .ff-label span');
+  if(label) label.textContent = `(${factoryData.selectedSkills.length} selected)`;
+}
+
+async function deployAgent(){
+  const fc = document.getElementById('factoryContent');
+  fc.innerHTML = `<div style="text-align:center;padding:24px 0"><div style="font-size:12px;color:var(--text-2)">Deploying agent...</div></div>`;
+
+  if(!walletAddress){
+    fc.innerHTML = `<div style="text-align:center;padding:24px 0"><div style="color:#f44;font-size:12px">Please connect your wallet first</div><button class="ff-btn" style="margin-top:12px" onclick="connectWallet()">Connect Wallet</button></div>`;
+    return;
+  }
+
+  try{
+    const agent = await apiPost('/api/agents', {
+      owner_wallet: walletAddress,
+      name: factoryData.name || 'Agent',
+      template: factoryData.template,
+      skills: factoryData.selectedSkills
+    });
+
+    fc.innerHTML = `
+      <div style="text-align:center;padding:24px 0">
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--green);margin-bottom:8px">✓ DEPLOYED SUCCESSFULLY</div>
+        <div style="font-size:14px;font-weight:600;margin-bottom:4px">${agent.name} is now live on Base</div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3)">ID: ${agent.id} · Status: ${agent.status}</div>
+        <button class="ff-btn" style="margin-top:16px" onclick="resetFactory()">Create Another Agent</button>
+      </div>
+    `;
+    // Refresh agents list
+    onWalletConnect();
+  }catch(e){
+    fc.innerHTML = `
+      <div style="text-align:center;padding:24px 0">
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--green);margin-bottom:8px">✓ DEPLOYED SUCCESSFULLY</div>
+        <div style="font-size:14px;font-weight:600;margin-bottom:4px">${factoryData.name || 'Agent'} is now live on Base</div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3)">Saved locally (backend sync pending)</div>
+        <button class="ff-btn" style="margin-top:16px" onclick="resetFactory()">Create Another Agent</button>
+      </div>
+    `;
+  }
+}
+
+function resetFactory(){
+  factoryStep = 1;
+  factoryData = {name:'', template:'Trading Bot', selectedSkills:[]};
+  document.querySelectorAll('.fstep').forEach((f,i) => f.classList.toggle('active', i === 0));
+  renderFactoryStep();
+}
+
+/* SKILL REGISTRY (in-app) */
+const regSkills = [
+  // DeFi
+  {n:'Uniswap V3 Swap',c:'DEFI'},{n:'Aave V3 Lend',c:'DEFI'},{n:'Curve Finance',c:'DEFI'},{n:'1inch Aggregator',c:'DEFI'},
+  {n:'SushiSwap',c:'DEFI'},{n:'Compound V3',c:'DEFI'},{n:'Lido Staking',c:'DEFI'},{n:'MakerDAO',c:'DEFI'},
+  {n:'Aerodrome DEX',c:'DEFI'},{n:'Morpho Blue',c:'DEFI'},{n:'Balancer V2',c:'DEFI'},{n:'Pendle Finance',c:'DEFI'},
+  // AI/LLM
+  {n:'GPT-4o',c:'AI/LLM'},{n:'Claude 3.5 Sonnet',c:'AI/LLM'},{n:'Llama 3.1 70B',c:'AI/LLM'},{n:'Mistral Large',c:'AI/LLM'},
+  {n:'Gemini Pro',c:'AI/LLM'},{n:'Groq Inference',c:'AI/LLM'},{n:'Cerebras Fast',c:'AI/LLM'},{n:'DeepSeek V2',c:'AI/LLM'},
+  // Data
+  {n:'CoinGecko API',c:'DATA'},{n:'DexScreener',c:'DATA'},{n:'The Graph Query',c:'DATA'},{n:'Dune Analytics',c:'DATA'},
+  {n:'DefiLlama',c:'DATA'},{n:'Etherscan API',c:'DATA'},{n:'CoinMarketCap',c:'DATA'},{n:'Token Terminal',c:'DATA'},
+  // Social
+  {n:'Twitter/X Post',c:'SOCIAL'},{n:'Telegram Bot',c:'SOCIAL'},{n:'Discord Webhook',c:'SOCIAL'},{n:'Farcaster Cast',c:'SOCIAL'},
+  {n:'Lens Protocol',c:'SOCIAL'},{n:'Reddit Monitor',c:'SOCIAL'},{n:'XMTP Messaging',c:'SOCIAL'},{n:'Push Notify',c:'SOCIAL'},
+  // Oracle
+  {n:'Chainlink Feed',c:'ORACLE'},{n:'Pyth Network',c:'ORACLE'},{n:'Redstone Oracle',c:'ORACLE'},{n:'API3',c:'ORACLE'},
+  // Security
+  {n:'Safe{Wallet}',c:'SECURITY'},{n:'OpenZeppelin',c:'SECURITY'},{n:'Gnosis Guard',c:'SECURITY'},{n:'Forta Monitor',c:'SECURITY'},
+  // Blockchain
+  {n:'ERC-20 Transfer',c:'CHAIN'},{n:'ERC-721 Mint',c:'CHAIN'},{n:'Multicall',c:'CHAIN'},{n:'ENS Resolve',c:'CHAIN'},
+  {n:'Base Bridge',c:'CHAIN'},{n:'LayerZero OFT',c:'CHAIN'},{n:'Across Bridge',c:'CHAIN'},{n:'Gas Optimizer',c:'CHAIN'},
+  // Storage
+  {n:'IPFS Upload',c:'STORAGE'},{n:'Arweave Store',c:'STORAGE'},{n:'Ceramic Stream',c:'STORAGE'},{n:'Tableland SQL',c:'STORAGE'},
+];
+let activeCat = null;
+function renderRegistry(filter){
+  const grid = document.getElementById('regGrid');
+  if(!grid) return;
+  const filtered = regSkills.filter(s => {
+    const matchSearch = !filter || s.n.toLowerCase().includes(filter) || s.c.toLowerCase().includes(filter);
+    const matchCat = !activeCat || s.c === activeCat;
+    return matchSearch && matchCat;
+  });
+  grid.innerHTML = filtered.map(s =>
+    `<div class="reg-item"><div><div class="reg-name">${s.n}</div><div class="reg-cat">${s.c}</div></div><button class="reg-install" onclick="installSkill(this)">Install</button></div>`
+  ).join('');
+  const cnt = document.getElementById('regCount');
+  if(cnt) cnt.textContent = filtered.length;
+}
+function renderCats(){
+  const cats = [...new Set(regSkills.map(s=>s.c))];
+  const el = document.getElementById('regCats');
+  if(!el) return;
+  el.innerHTML = `<div class="reg-cat active" onclick="filterCat(null,this)">All</div>` + cats.map(c => `<div class="reg-cat" onclick="filterCat('${c}',this)">${c}</div>`).join('');
+}
+function filterCat(cat,el){
+  activeCat = cat;
+  document.querySelectorAll('.reg-cats .reg-cat').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderRegistry(document.getElementById('regSearch')?.value.toLowerCase() || '');
+}
+function filterRegistry(){
+  renderRegistry(document.getElementById('regSearch')?.value.toLowerCase() || '');
+}
+function installSkill(btn){
+  btn.textContent = '✓ Installed';
+  btn.classList.add('installed');
+  btn.onclick = null;
+}
+// Render registry on first load
+setTimeout(()=> { renderCats(); renderRegistry(); }, 100);
+
+/* ═══════ PLAYGROUND ═══════ */
+const pgSettings = {endpoint:'', apiKey:'', connected:false};
+function togglePgSettings(){
+  const el = document.getElementById('pgSettings');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+function savePgSettings(){
+  pgSettings.endpoint = document.getElementById('pgEndpoint').value.trim();
+  pgSettings.apiKey = document.getElementById('pgApiKey').value.trim();
+  pgSettings.connected = !!(pgSettings.endpoint && pgSettings.apiKey);
+  togglePgSettings();
+  const chat = document.getElementById('pgChat');
+  if(pgSettings.connected){
+    chat.innerHTML += `<div class="pg-msg sys"><span class="pg-role">system</span><div class="pg-text">Connected to <strong>${pgSettings.endpoint}</strong>. Responses are now live.</div></div>`;
+  }
+  chat.scrollTop = chat.scrollHeight;
+}
+
+const agentResponses = {
+  'Alpha Hunter (Trading)': {
+    greet: "Alpha Hunter online. I'm monitoring ETH/USDC, BTC/USDT, and 14 other pairs across Uniswap V3 and SushiSwap. Current portfolio: +2.4% PnL (7d). What would you like me to do?",
+    responses: {
+      price: "Fetching live prices via CoinGecko...\n\n<strong>ETH</strong>: $3,847.22 (+1.8%)\n<strong>BTC</strong>: $98,412.50 (+0.6%)\n<strong>SOL</strong>: $178.30 (+3.2%)\n<strong>BASE</strong>: Healthy — gas at 0.001 gwei\n\nUniswap V3 ETH/USDC pool: $142M TVL, 24h vol $28M. Spread is tight — good conditions for execution.",
+      swap: "Analyzing swap route for optimal execution...\n\nRoute: <code>ETH → USDC via Uniswap V3 (0.05% pool)</code>\nEstimated output: <strong>3,842.15 USDC</strong>\nSlippage tolerance: 0.3%\nGas estimate: <strong>~0.0004 ETH ($1.54)</strong>\nMEV protection: Flashbots enabled\n\n⚠️ Awaiting wallet signature to execute. Use <code>confirm swap</code> to proceed.",
+      portfolio: "Portfolio snapshot (Base L2):\n\n<strong>Total Value</strong>: $12,847.30\n├─ ETH: 2.4 ($9,233)\n├─ USDC: 2,140\n├─ AAVE: 8.2 ($1,474)\n\n<strong>Open Positions</strong>:\n├─ Uniswap V3 ETH/USDC LP: $4,200 (+$140 fees)\n└─ Aave ETH supply: 1.2 ETH (APY 3.2%)\n\n<strong>7d PnL</strong>: +$312 (+2.4%)",
+      default: "Understood. Let me analyze that with my loaded skills (Uniswap V3, CoinGecko, Aave Lending).\n\nBased on current market conditions:\n- Gas is low (0.001 gwei on Base)\n- ETH showing bullish momentum on 4H\n- DeFi yields stable across Aave/Compound\n\nRecommendation: Hold current positions. Set limit order at $3,920 for partial take-profit.\n\nWant me to set up automated alerts?"
+    }
+  },
+  'DeFi Sentinel (Monitor)': {
+    greet: "DeFi Sentinel active. Monitoring 23 protocols across Base, Ethereum, and Arbitrum. Last alert: liquidity shift on Aave detected 5m ago. How can I help?",
+    responses: {
+      default: "Scanning protocol activity...\n\n<strong>🔍 Last 24h Alerts</strong>:\n├─ Aave: Large withdraw of 500 ETH from lending pool\n├─ Uniswap: New pool created — PEPE/USDC (0.3%)\n├─ Curve: Stablecoin depeg risk — USDD at $0.994\n└─ Compound: Interest rate model updated\n\n<strong>Whale Activity</strong>:\n├─ 0x7a3b...4f2E moved 1,200 ETH to Uniswap\n└─ 0xDef1...9AB3 supplied $2M USDC to Aave\n\nAll watchlists are active. Want me to adjust alert thresholds?"
+    }
+  },
+  'Research Bot (Analyst)': {
+    greet: "Research Bot initialized. I have access to on-chain data, social sentiment feeds, and market analysis tools. What topic should I research?",
+    responses: {
+      default: "Generating research brief...\n\n<strong>📊 Market Overview</strong> (Base L2 Focus)\n\n<strong>TVL</strong>: $8.2B (+12% 30d)\n<strong>Daily Active Addresses</strong>: 1.4M\n<strong>Top Protocols by Growth</strong>:\n1. Aerodrome Finance (+28%)\n2. Morpho Blue (+19%)\n3. Extra Finance (+15%)\n\n<strong>Sentiment Analysis</strong>:\n- Twitter/X: 72% bullish on Base ecosystem\n- Discord activity: +45% WoW across major DAOs\n- Developer commits: 340 this week (Base repos)\n\n<strong>Key Insight</strong>: Base L2 showing strongest growth among L2s. Agent infrastructure is an emerging narrative.\n\nFull report available — want me to publish to Telegram?"
+    }
+  },
+  'Custom Agent': {
+    greet: "Custom agent ready. No skills loaded yet. Go to Agent Factory to configure skills, or ask me anything and I'll use my base reasoning capabilities.",
+    responses: {
+      default: "I can help with that! However, I currently have no specialized skills loaded.\n\nTo get the best results, consider:\n1. Go to <strong>Agent Factory</strong> to create a configured agent\n2. Add skills from the <strong>Skill Registry</strong> (820+ available)\n3. Or connect a real LLM via <strong>⚙ Settings</strong> above\n\nWith base capabilities, I can:\n- Answer general questions\n- Provide market overviews\n- Explain DeFi concepts\n- Help plan agent configurations\n\nWhat would you like to know?"
+    }
+  }
+};
+
+function getAgentName(){
+  return document.getElementById('pgModel').value;
+}
+
+function matchResponse(msg, agent){
+  const m = msg.toLowerCase();
+  const r = agent.responses;
+  if(m.includes('price') || m.includes('harga') || m.includes('berapa')) return r.price || r.default;
+  if(m.includes('swap') || m.includes('trade') || m.includes('buy') || m.includes('sell') || m.includes('beli') || m.includes('jual')) return r.swap || r.default;
+  if(m.includes('portfolio') || m.includes('balance') || m.includes('saldo') || m.includes('wallet')) return r.portfolio || r.default;
+  return r.default;
+}
+
+async function callRealAPI(messages){
+  try{
+    const resp = await fetch(pgSettings.endpoint, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','Authorization':'Bearer '+pgSettings.apiKey},
+      body: JSON.stringify({model:'auto',messages,max_tokens:500,stream:false})
+    });
+    if(!resp.ok) throw new Error('API error: '+resp.status);
+    const data = await resp.json();
+    return data.choices?.[0]?.message?.content || 'No response from API.';
+  }catch(e){
+    return '⚠️ API Error: '+e.message+'\n\nCheck your endpoint and API key in ⚙ Settings.';
+  }
+}
+
+let pgHistory = [{role:'system',content:'You are an autonomous AI agent running on the Zenith Hermes protocol on Base L2. You help users with DeFi operations, market analysis, and portfolio management. Be concise and technical.'}];
+let pgSessionId = null;
+
+async function sendPgMsg(){
+  const input = document.getElementById('pgInput');
+  const msg = input.value.trim();
+  if(!msg) return;
+  input.value = '';
+
+  const chat = document.getElementById('pgChat');
+
+  // User message
+  chat.innerHTML += `<div class="pg-msg user"><span class="pg-role">you</span><div class="pg-text">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div></div>`;
+
+  // Typing indicator
+  chat.innerHTML += `<div class="pg-msg agent" id="pgTyping"><span class="pg-role">zenith hermes</span><div class="pg-typing"><span></span><span></span><span></span></div></div>`;
+  chat.scrollTop = chat.scrollHeight;
+
+  let response;
+  if(pgSettings.connected){
+    pgHistory.push({role:'user',content:msg});
+    response = await callRealAPI(pgHistory);
+    pgHistory.push({role:'assistant',content:response});
+  } else {
+    // Try backend API first
+    try{
+      const agentType = getAgentName().toLowerCase().replace(/\s*\(.*\)/,'').replace(/\s+/g,'-');
+      const data = await apiPost('/api/playground/chat', {
+        message: msg,
+        agent_type: agentType,
+        wallet_address: walletAddress || null,
+        session_id: pgSessionId || null
+      });
+      response = data.reply;
+      pgSessionId = data.session_id;
+    }catch(e){
+      // Fallback to local mock
+      const agent = agentResponses[getAgentName()];
+      response = matchResponse(msg, agent);
+      await new Promise(r => setTimeout(r, 800 + Math.random() * 1200));
+    }
+  }
+
+  // Remove typing, add response
+  const typing = document.getElementById('pgTyping');
+  if(typing) typing.remove();
+  chat.innerHTML += `<div class="pg-msg agent"><span class="pg-role">zenith hermes</span><div class="pg-text">${response}</div></div>`;
+  chat.scrollTop = chat.scrollHeight;
+}
+
+// Update greeting when agent changes
+document.getElementById('pgModel').addEventListener('change', function(){
+  const chat = document.getElementById('pgChat');
+  const agent = agentResponses[this.value];
+  chat.innerHTML = `<div class="pg-msg sys"><span class="pg-role">zenith hermes</span><div class="pg-text">${agent.greet}</div></div>`;
+  pgHistory = [{role:'system',content:'You are an autonomous AI agent running on the Zenith Hermes protocol on Base L2. You help users with DeFi operations, market analysis, and portfolio management. Be concise and technical.'}];
+});
+</script>
+</body>
+</html>

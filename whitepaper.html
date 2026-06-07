@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zenith Agent — Whitepaper v0.1</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050505;--text:#fff;--text-2:rgba(255,255,255,.6);--surface:rgba(255,255,255,.04);--border:rgba(255,255,255,.08)}
+[data-theme="light"]{--bg:#fafafa;--text:#111;--text-2:rgba(0,0,0,.55);--surface:rgba(0,0,0,.03);--border:rgba(0,0,0,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.8;transition:background .3s,color .3s}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:-.02em}
+p{margin:12px 0;color:var(--text-2)}
+ul,ol{margin:8px 0 8px 24px;color:var(--text-2)}
+li{margin:6px 0}
+code{font-family:'JetBrains Mono',monospace;background:var(--surface);padding:2px 8px;border-radius:4px;font-size:.88em}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:.85em;line-height:1.6;margin:16px 0}
+table{width:100%;border-collapse:collapse;margin:16px 0}
+th,td{text-align:left;padding:10px 16px;border-bottom:1px solid var(--border);font-size:.9em}
+th{font-weight:600;color:var(--text)}
+td{color:var(--text-2)}
+a{color:var(--text);text-decoration:underline;text-underline-offset:3px}
+
+.wp{max-width:720px;margin:0 auto;padding:60px 24px 120px}
+.wp-header{text-align:center;margin-bottom:60px;padding-bottom:40px;border-bottom:1px solid var(--border)}
+.wp-header .logo{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:24px}
+.wp-header .logo svg{width:40px;height:40px}
+.wp-header .logo span{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:1.5rem}
+.wp-header h1{font-size:2rem;margin:16px 0 8px}
+.wp-header .meta{color:var(--text-2);font-size:.85rem}
+.section{margin:48px 0}
+.section h2{font-size:1.4rem;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.section h3{font-size:1.1rem;margin:28px 0 8px}
+.highlight{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin:16px 0}
+.theme-btn{position:fixed;top:20px;right:20px;background:var(--surface);border:1px solid var(--border);color:var(--text);width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:10}
+.theme-btn:hover{background:var(--border)}
+</style>
+</head>
+<body>
+
+<button class="theme-btn" onclick="toggleTheme()">☀</button>
+
+<div class="wp">
+
+<div class="wp-header">
+  <div class="logo">
+    <svg viewBox="0 0 64 56" fill="none">
+      <path d="M32 4L52 16L32 28L12 16Z" fill="var(--text)"/>
+      <path d="M12 16L32 28L32 52L12 40Z" fill="var(--text)" opacity=".3"/>
+      <path d="M52 16L32 28L32 52L52 40Z" fill="var(--text)" opacity=".12"/>
+    </svg>
+    <span>Zenith Agent</span>
+  </div>
+  <h1>Whitepaper v0.1</h1>
+  <p class="meta">Autonomous Agent Infrastructure on Base L2</p>
+  <p class="meta">June 2025 · Draft</p>
+</div>
+
+<div class="section">
+<h2>1. Abstract</h2>
+<p>Zenith Agent is a composable infrastructure protocol for deploying, managing, and monetizing autonomous AI agents on Base L2. The protocol introduces a modular skill system where agents dynamically acquire capabilities, a revenue-sharing model that rewards skill creators per invocation, and an on-chain registry that provides verifiable provenance for all agent operations.</p>
+<p>This paper describes the architecture, tokenomics, and governance model of the Zenith Agent protocol.</p>
+</div>
+
+<div class="section">
+<h2>2. Introduction</h2>
+<p>The emergence of large language models and on-chain autonomous agents creates an opportunity for a new class of infrastructure: platforms where AI agents operate independently, compose capabilities from a shared skill marketplace, and generate revenue from their operations.</p>
+<p>Current approaches suffer from several limitations:</p>
+<ul>
+  <li><strong>Monolithic design</strong> — agents are tightly coupled to specific capabilities, making them inflexible</li>
+  <li><strong>No composability</strong> — skills cannot be shared, reused, or combined across agents</li>
+  <li><strong>Centralized control</strong> — platforms retain full control over agent operations and revenue</li>
+  <li><strong>No provenance</strong> — agent actions are not verifiable or auditable</li>
+</ul>
+<p>Zenith Agent addresses these limitations through a decentralized, modular architecture built on Base L2.</p>
+</div>
+
+<div class="section">
+<h2>3. Architecture</h2>
+
+<h3>3.1 System Overview</h3>
+<pre>
+┌────────────────────────────────────────────┐
+│              User Interface                 │
+│   Dashboard · Agent Factory · Playground    │
+├────────────────────────────────────────────┤
+│              API Layer (REST)               │
+│   Agent CRUD · Skills · Chat · Analytics    │
+├────────────────────────────────────────────┤
+│           Execution Engine                  │
+│   Skill Orchestration · State Management    │
+│   LLM Integration · Event Processing       │
+├────────────────────────────────────────────┤
+│          Smart Contracts (Base L2)          │
+│   $ZNA Token · Agent Registry               │
+│   Skill Registry · Staking · Revenue Split  │
+├────────────────────────────────────────────┤
+│          External Integrations              │
+│   DEXs · Oracles · Storage · Social APIs    │
+└────────────────────────────────────────────┘
+</pre>
+
+<h3>3.2 Agent Model</h3>
+<p>Each agent in Zenith is an autonomous entity defined by:</p>
+<ul>
+  <li><strong>Identity</strong> — unique on-chain address and metadata</li>
+  <li><strong>Template</strong> — base behavior pattern (Trading, Monitoring, Research, etc.)</li>
+  <li><strong>Skill Set</strong> — ordered list of composable skills the agent can invoke</li>
+  <li><strong>State</strong> — runtime configuration, memory, and operational data</li>
+  <li><strong>Owner</strong> — wallet address that deployed and controls the agent</li>
+</ul>
+
+<h3>3.3 Skill System</h3>
+<p>Skills are the atomic units of capability in Zenith. Each skill:</p>
+<ul>
+  <li>Has a standardized input/output interface</li>
+  <li>Is content-addressed and registered on-chain</li>
+  <li>Tracks installation count and performance metrics</li>
+  <li>Earns the creator fees on every invocation</li>
+</ul>
+<p>Skills are organized into 8 categories: DEFI, AI/LLM, DATA, SOCIAL, ORACLE, SECURITY, CHAIN, and STORAGE. The initial launch includes 56 verified skills.</p>
+
+<h3>3.4 Execution Engine</h3>
+<p>The execution engine orchestrates skill invocations within a sandboxed environment:</p>
+<ul>
+  <li>Skills execute in isolated contexts with defined resource limits</li>
+  <li>Results are cached and can be shared between skills</li>
+  <li>Failed skill invocations are retried with exponential backoff</li>
+  <li>All invocations are logged for auditing</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>4. Tokenomics</h2>
+
+<h3>4.1 $ZNA Token</h3>
+<p>$ZNA is the native utility token of the Zenith Agent protocol. It serves four primary functions:</p>
+
+<div class="highlight">
+<strong>Token Functions:</strong>
+<ul>
+  <li><strong>Staking</strong> — stake $ZNA to earn a share of protocol fees</li>
+  <li><strong>Governance</strong> — vote on proposals, skill verification, parameter changes</li>
+  <li><strong>Deployment Fees</strong> — pay agent deployment costs in $ZNA</li>
+  <li><strong>Marketplace</strong> — buy/sell premium skills and agent templates</li>
+</ul>
+</div>
+
+<h3>4.2 Distribution</h3>
+<table>
+<tr><th>Allocation</th><th>Percentage</th><th>Vesting</th></tr>
+<tr><td>Community & Ecosystem</td><td>40%</td><td>Linear over 4 years</td></tr>
+<tr><td>Team & Advisors</td><td>20%</td><td>4-year vesting, 1-year cliff</td></tr>
+<tr><td>Treasury</td><td>15%</td><td>Governed by DAO</td></tr>
+<tr><td>Liquidity Provision</td><td>10%</td><td>Immediate</td></tr>
+<tr><td>Private Sale</td><td>10%</td><td>6-month cliff, 18-month linear</td></tr>
+<tr><td>Public Sale</td><td>5%</td><td>Immediate</td></tr>
+</table>
+
+<h3>4.3 Revenue Model</h3>
+<p>Protocol revenue comes from:</p>
+<ul>
+  <li><strong>Skill invocation fees</strong> — 2.5% of each skill call fee goes to protocol</li>
+  <li><strong>Agent deployment fees</strong> — one-time fee to deploy a new agent</li>
+  <li><strong>Marketplace commissions</strong> — 5% on premium skill/template sales</li>
+  <li><strong>Staking spread</strong> — portion of staking rewards</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>5. Staking</h2>
+<p>$ZNA stakers earn a proportional share of protocol fees. The staking model includes:</p>
+<ul>
+  <li><strong>Flexible staking</strong> — stake/unstake anytime, lower APY</li>
+  <li><strong>Locked staking</strong> — 30/90/180/365 day locks, higher APY multiplier</li>
+  <li><strong>Revenue distribution</strong> — weekly fee distribution to stakers</li>
+  <li><strong>Governance weight</strong> — voting power proportional to stake amount × lock duration</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>6. Governance</h2>
+<p>Zenith Agent operates as a progressively decentralized protocol. Governance responsibilities include:</p>
+<ul>
+  <li>Skill verification and approval</li>
+  <li>Protocol parameter adjustments (fees, limits, rewards)</li>
+  <li>Treasury allocation and grant distribution</li>
+  <li>Smart contract upgrades</li>
+  <li>New feature prioritization</li>
+</ul>
+<p>Proposals require a minimum $ZNA stake to submit and pass through a 7-day voting period with a quorum requirement of 10% of staked supply.</p>
+</div>
+
+<div class="section">
+<h2>7. Security</h2>
+<p>Security is fundamental to the protocol:</p>
+<ul>
+  <li><strong>Sandboxed execution</strong> — skills run in isolated environments</li>
+  <li><strong>Formal verification</strong> — critical contracts formally verified</li>
+  <li><strong>Audit trail</strong> — all agent actions logged on-chain</li>
+  <li><strong>Token-gated access</strong> — sensitive operations require $ZNA stake</li>
+  <li><strong>MEV protection</strong> — transactions protected from frontrunning</li>
+  <li><strong>Bug bounty</strong> — ongoing security bounty program</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>8. Roadmap</h2>
+<table>
+<tr><th>Phase</th><th>Timeline</th><th>Milestones</th></tr>
+<tr><td>Phase 1: Foundation</td><td>Q2 2025</td><td>Frontend, wallet connection, skill registry, agent factory, playground</td></tr>
+<tr><td>Phase 2: Infrastructure</td><td>Q3 2025</td><td>Backend API, database, real-time data, LLM integration</td></tr>
+<tr><td>Phase 3: Contracts</td><td>Q4 2025</td><td>$ZNA token, agent/skill registries, staking on Base Sepolia</td></tr>
+<tr><td>Phase 4: Mainnet</td><td>Q1 2026</td><td>Base mainnet, governance, marketplace, mobile app</td></tr>
+<tr><td>Phase 5: Scale</td><td>Q2 2026</td><td>Multi-chain, advanced analytics, agent-to-agent communication</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>9. Conclusion</h2>
+<p>Zenith Agent represents a new paradigm for AI agent infrastructure: decentralized, composable, and economically aligned. By combining modular skills, on-chain provenance, and a fair revenue model, the protocol creates sustainable value for agent creators, skill developers, and the broader ecosystem.</p>
+<p>The protocol is designed to evolve through community governance, ensuring that the platform serves the needs of its users as the agent economy grows.</p>
+</div>
+
+<div class="section" style="text-align:center;padding:40px 0;border-top:1px solid var(--border)">
+  <p style="color:var(--text);font-family:'Space Grotesk',sans-serif;font-weight:600">Zenith Agent Protocol</p>
+  <p>Built on Base L2 · 2025</p>
+  <p><a href="https://agentpad-ernvodjf.devinapps.com">Launch App</a></p>
+</div>
+
+</div>
+
+<script>
+function toggleTheme(){
+  const html = document.documentElement;
+  const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  document.querySelector('.theme-btn').textContent = next === 'dark' ? '☀' : '☾';
+  localStorage.setItem('zenith-wp-theme', next);
+}
+const s = localStorage.getItem('zenith-wp-theme');
+if(s){document.documentElement.setAttribute('data-theme',s);document.querySelector('.theme-btn').textContent=s==='dark'?'☀':'☾';}
+</script>
+</body>
+</html>

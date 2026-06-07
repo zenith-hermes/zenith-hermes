@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zenith Hermes — Documentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050505;--text:#fff;--text-2:rgba(255,255,255,.6);--surface:rgba(255,255,255,.04);--border:rgba(255,255,255,.08);--accent:#fff}
+[data-theme="light"]{--bg:#fafafa;--text:#111;--text-2:rgba(0,0,0,.55);--surface:rgba(0,0,0,.03);--border:rgba(0,0,0,.08);--accent:#111}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.7;transition:background .3s,color .3s}
+a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--border);transition:border-color .2s}
+a:hover{border-color:var(--text)}
+code{font-family:'JetBrains Mono',monospace;background:var(--surface);padding:2px 8px;border-radius:4px;font-size:.88em}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:.85em;line-height:1.6;margin:16px 0}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:-.02em}
+h1{font-size:2.4rem;margin-bottom:8px}
+h2{font-size:1.6rem;margin:48px 0 16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+h3{font-size:1.15rem;margin:32px 0 12px}
+h4{font-size:1rem;margin:24px 0 8px;color:var(--text-2)}
+p{margin:8px 0;color:var(--text-2)}
+ul,ol{margin:8px 0 8px 24px;color:var(--text-2)}
+li{margin:4px 0}
+table{width:100%;border-collapse:collapse;margin:16px 0}
+th,td{text-align:left;padding:10px 16px;border-bottom:1px solid var(--border);font-size:.9em}
+th{font-weight:600;color:var(--text);font-family:'Space Grotesk',sans-serif}
+td{color:var(--text-2)}
+.badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:600;letter-spacing:.04em;background:var(--surface);border:1px solid var(--border)}
+
+/* Layout */
+.doc-layout{display:flex;min-height:100vh}
+.doc-sidebar{width:260px;position:fixed;top:0;left:0;bottom:0;padding:24px;border-right:1px solid var(--border);overflow-y:auto;background:var(--bg);z-index:10}
+.doc-sidebar .logo{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;margin-bottom:32px}
+.doc-sidebar .logo svg{width:24px;height:24px}
+.doc-sidebar nav a{display:block;padding:6px 12px;border-radius:8px;border:none;color:var(--text-2);font-size:.88rem;margin:2px 0;transition:all .2s}
+.doc-sidebar nav a:hover,.doc-sidebar nav a.active{background:var(--surface);color:var(--text)}
+.doc-sidebar nav .section-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);margin:24px 0 8px 12px}
+.doc-main{margin-left:260px;max-width:780px;padding:48px 48px 120px}
+.doc-topbar{position:fixed;top:0;left:260px;right:0;height:56px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:flex-end;padding:0 24px;z-index:9;gap:12px}
+.doc-topbar button{background:none;border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:.85rem;font-family:'Inter',sans-serif;transition:all .2s}
+.doc-topbar button:hover{background:var(--surface)}
+.doc-main{padding-top:80px}
+
+/* Callout */
+.callout{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:16px 0}
+.callout-title{font-weight:600;font-size:.88rem;margin-bottom:4px}
+.callout p{margin:0;font-size:.88rem}
+
+@media(max-width:768px){
+  .doc-sidebar{display:none}
+  .doc-main{margin-left:0;padding:24px 20px 80px}
+  .doc-topbar{left:0}
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="doc-sidebar">
+  <div class="logo">
+    <svg viewBox="0 0 64 56" fill="none">
+      <path d="M32 4L52 16L32 28L12 16Z" fill="var(--text)"/>
+      <path d="M12 16L32 28L32 52L12 40Z" fill="var(--text)" opacity=".3"/>
+      <path d="M52 16L32 28L32 52L52 40Z" fill="var(--text)" opacity=".12"/>
+    </svg>
+    Docs
+  </div>
+  <nav>
+    <div class="section-title">Getting Started</div>
+    <a href="#overview" class="active">Overview</a>
+    <a href="#quickstart">Quickstart</a>
+    <a href="#architecture">Architecture</a>
+
+    <div class="section-title">Core Concepts</div>
+    <a href="#agents">Agents</a>
+    <a href="#skills">Skills</a>
+    <a href="#templates">Templates</a>
+    <a href="#playground">Playground</a>
+
+    <div class="section-title">API Reference</div>
+    <a href="#api-auth">Authentication</a>
+    <a href="#api-agents">Agents API</a>
+    <a href="#api-skills">Skills API</a>
+    <a href="#api-dashboard">Dashboard API</a>
+    <a href="#api-playground">Playground API</a>
+
+    <div class="section-title">Protocol</div>
+    <a href="#tokenomics">Tokenomics ($ZNH)</a>
+    <a href="#staking">Staking</a>
+    <a href="#governance">Governance</a>
+
+    <div class="section-title">Resources</div>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+</aside>
+
+<!-- Top bar -->
+<div class="doc-topbar">
+  <button onclick="toggleDocTheme()">☀ / ☾</button>
+  <button onclick="window.open('https://agentpad-ernvodjf.devinapps.com','_blank')">Launch App →</button>
+</div>
+
+<!-- Main Content -->
+<main class="doc-main">
+
+<span class="badge">v0.1.0 · Base Sepolia</span>
+<h1 id="overview">Zenith Hermes</h1>
+<p style="font-size:1.1rem;color:var(--text)">Autonomous agent infrastructure on Base. Build, deploy, and monetize AI agents with composable skills.</p>
+
+<h2 id="quickstart">Quickstart</h2>
+<h3>1. Connect Wallet</h3>
+<p>Connect your MetaMask wallet to Base network. The platform supports Base Mainnet and Base Sepolia testnet.</p>
+<pre>Network: Base L2
+Chain ID: 8453 (mainnet) / 84532 (sepolia)
+RPC: https://mainnet.base.org</pre>
+
+<h3>2. Create Your First Agent</h3>
+<p>Navigate to <strong>Agent Factory</strong> and follow the 3-step wizard:</p>
+<ol>
+  <li><strong>Configure</strong> — Name your agent and select a template</li>
+  <li><strong>Select Skills</strong> — Choose from 56 composable skills across 8 categories</li>
+  <li><strong>Deploy</strong> — Review and deploy to Base</li>
+</ol>
+
+<h3>3. Monitor & Earn</h3>
+<p>Track your agent's performance in the Dashboard. Agents earn revenue from skill invocations, and creators earn USDC per call.</p>
+
+<h2 id="architecture">Architecture</h2>
+<p>Zenith Hermes is built on a modular architecture:</p>
+<pre>┌─────────────────────────────────────┐
+│           Frontend (SPA)            │
+│  HTML/CSS/JS · Canvas Animations    │
+│  Wallet Connect · Theme Toggle      │
+├─────────────────────────────────────┤
+│          Backend API (FastAPI)      │
+│  REST Endpoints · SQLite/Postgres   │
+│  Agent CRUD · Skill Registry        │
+│  Playground Chat · Dashboard Stats  │
+├─────────────────────────────────────┤
+│        Smart Contracts (Base)       │
+│  $ZNH Token · Agent Registry        │
+│  Skill Registry · Staking           │
+│  Revenue Distribution               │
+└─────────────────────────────────────┘</pre>
+
+<h2 id="agents">Agents</h2>
+<p>Agents are autonomous programs that execute on-chain and off-chain operations. Each agent:</p>
+<ul>
+  <li>Has a unique on-chain identity</li>
+  <li>Runs a configurable set of <strong>skills</strong></li>
+  <li>Operates on a specific <strong>template</strong> (Trading Bot, DeFi Monitor, Research Analyst, etc.)</li>
+  <li>Tracks earnings, invocations, and uptime</li>
+  <li>Can evolve by acquiring/dropping skills based on performance</li>
+</ul>
+
+<h4>Agent Lifecycle</h4>
+<pre>Created → Idle → Running → (Earning) → Stopped
+                   ↑                        │
+                   └────── Restart ──────────┘</pre>
+
+<h2 id="skills">Skills</h2>
+<p>Skills are composable, modular capabilities that agents use to perform tasks. There are <strong>56 skills</strong> across <strong>8 categories</strong>:</p>
+
+<table>
+<tr><th>Category</th><th>Count</th><th>Examples</th></tr>
+<tr><td>DEFI</td><td>7</td><td>Uniswap V3 Swap, Aave Lend/Borrow, 1inch Aggregator</td></tr>
+<tr><td>AI/LLM</td><td>7</td><td>GPT-4o Inference, Claude Analysis, Sentiment Analyzer</td></tr>
+<tr><td>DATA</td><td>7</td><td>Dune Analytics, The Graph Query, CoinGecko Price</td></tr>
+<tr><td>SOCIAL</td><td>7</td><td>Twitter/X Monitor, Discord Notifier, Farcaster Post</td></tr>
+<tr><td>ORACLE</td><td>7</td><td>Chainlink Price Feed, Pyth Network, API3 dAPI</td></tr>
+<tr><td>SECURITY</td><td>7</td><td>Slither Audit, Forta Alerts, MEV Protection</td></tr>
+<tr><td>CHAIN</td><td>7</td><td>Base Bridge, LayerZero Send, Wormhole Transfer</td></tr>
+<tr><td>STORAGE</td><td>7</td><td>IPFS Pin, Arweave Store, Tableland SQL</td></tr>
+</table>
+
+<h2 id="templates">Templates</h2>
+<p>Pre-configured agent templates for common use cases:</p>
+<ul>
+  <li><strong>Trading Bot</strong> — Automated token trading with DeFi skills</li>
+  <li><strong>DeFi Monitor</strong> — Track yields, TVL, and protocol health</li>
+  <li><strong>Research Analyst</strong> — AI-powered project analysis and reports</li>
+  <li><strong>Yield Farmer</strong> — Optimize yield across protocols</li>
+  <li><strong>Custom Agent</strong> — Build from scratch with any skill combination</li>
+</ul>
+
+<h2 id="playground">Playground</h2>
+<p>The Playground is a live chat interface where you can interact with AI agents in real-time. Features:</p>
+<ul>
+  <li>4 agent types: Alpha Hunter, DeFi Sentinel, Research Bot, Custom</li>
+  <li>Real-time responses with typing indicators</li>
+  <li>Conversation history per session</li>
+  <li>Configurable LLM backend (OpenAI, Groq, local models)</li>
+</ul>
+
+<h2 id="api-auth">API Authentication</h2>
+<p>The API uses wallet-based authentication. Connect your wallet to get started:</p>
+<pre>POST /api/users/connect
+Content-Type: application/json
+
+{
+  "wallet_address": "0xYourWalletAddress..."
+}</pre>
+<p>Response:</p>
+<pre>{
+  "id": "abc123",
+  "wallet_address": "0x...",
+  "created_at": "2026-01-01T00:00:00Z",
+  "total_earned": 0.0,
+  "zna_staked": 0.0
+}</pre>
+
+<h2 id="api-agents">Agents API</h2>
+
+<h3>Create Agent</h3>
+<pre>POST /api/agents
+{
+  "owner_wallet": "0x...",
+  "name": "Alpha Bot",
+  "template": "Trading Bot",
+  "skills": ["Uniswap V3 Swap", "CoinGecko Price"]
+}</pre>
+
+<h3>List Agents</h3>
+<pre>GET /api/agents?wallet=0x...</pre>
+
+<h3>Update Agent</h3>
+<pre>PATCH /api/agents/{agent_id}
+{
+  "status": "running",
+  "skills": ["Uniswap V3 Swap", "CoinGecko Price", "Forta Alerts"]
+}</pre>
+
+<h3>Delete Agent</h3>
+<pre>DELETE /api/agents/{agent_id}</pre>
+
+<h2 id="api-skills">Skills API</h2>
+
+<h3>List Skills</h3>
+<pre>GET /api/skills
+GET /api/skills?category=DEFI
+GET /api/skills?search=swap</pre>
+
+<h3>Install Skill</h3>
+<pre>POST /api/skills/{skill_id}/install?wallet=0x...</pre>
+
+<h2 id="api-dashboard">Dashboard API</h2>
+<pre>GET /api/dashboard
+GET /api/dashboard?wallet=0x...
+
+Response:
+{
+  "total_agents": 0,
+  "total_skills": 56,
+  "total_earned": 0.0,
+  "total_users": 0,
+  "active_agents": 0
+}</pre>
+
+<h2 id="api-playground">Playground API</h2>
+<pre>POST /api/playground/chat
+{
+  "message": "What's the price of ETH?",
+  "agent_type": "alpha-hunter",
+  "session_id": null
+}
+
+Response:
+{
+  "reply": "ETH is trading at ~$2,450...",
+  "session_id": "abc123",
+  "agent_type": "alpha-hunter"
+}</pre>
+
+<h2 id="tokenomics">Tokenomics ($ZNH)</h2>
+
+<div class="callout">
+  <div class="callout-title">Coming Soon</div>
+  <p>$ZNH token is currently in development. Tokenomics will be finalized before mainnet launch.</p>
+</div>
+
+<h4>Planned Distribution</h4>
+<table>
+<tr><th>Allocation</th><th>%</th><th>Description</th></tr>
+<tr><td>Community & Ecosystem</td><td>40%</td><td>Rewards, grants, bounties</td></tr>
+<tr><td>Team & Advisors</td><td>20%</td><td>4-year vesting, 1-year cliff</td></tr>
+<tr><td>Treasury</td><td>15%</td><td>Protocol development fund</td></tr>
+<tr><td>Liquidity</td><td>10%</td><td>DEX liquidity provision</td></tr>
+<tr><td>Private Sale</td><td>10%</td><td>Strategic investors</td></tr>
+<tr><td>Public Sale</td><td>5%</td><td>Fair launch</td></tr>
+</table>
+
+<h4>Utility</h4>
+<ul>
+  <li><strong>Staking</strong> — Stake $ZNH to earn protocol fees</li>
+  <li><strong>Governance</strong> — Vote on protocol upgrades and proposals</li>
+  <li><strong>Agent Deployment</strong> — Pay deployment fees in $ZNH</li>
+  <li><strong>Skill Marketplace</strong> — Buy/sell premium skills</li>
+</ul>
+
+<h2 id="staking">Staking</h2>
+<div class="callout">
+  <div class="callout-title">Coming Soon</div>
+  <p>Staking will be available once $ZNH token is deployed on Base.</p>
+</div>
+<p>Planned staking features:</p>
+<ul>
+  <li>Flexible and locked staking options</li>
+  <li>Revenue sharing from protocol fees</li>
+  <li>Governance voting power proportional to stake</li>
+  <li>Bonus rewards for long-term stakers</li>
+</ul>
+
+<h2 id="governance">Governance</h2>
+<div class="callout">
+  <div class="callout-title">Coming Soon</div>
+  <p>Governance will launch with the $ZNH token.</p>
+</div>
+<p>Planned governance features:</p>
+<ul>
+  <li>On-chain proposal creation and voting</li>
+  <li>Skill approval/verification process</li>
+  <li>Protocol parameter adjustments</li>
+  <li>Treasury allocation decisions</li>
+</ul>
+
+<h2 id="roadmap">Roadmap</h2>
+<table>
+<tr><th>Phase</th><th>Status</th><th>Milestones</th></tr>
+<tr><td>Phase 1</td><td><span class="badge">Complete</span></td><td>Frontend SPA, wallet connection, skill registry, agent factory, playground</td></tr>
+<tr><td>Phase 2</td><td><span class="badge">In Progress</span></td><td>Backend API, database, real-time dashboard, LLM integration</td></tr>
+<tr><td>Phase 3</td><td><span class="badge">Planned</span></td><td>Smart contracts on Base Sepolia, $ZNH token, staking</td></tr>
+<tr><td>Phase 4</td><td><span class="badge">Planned</span></td><td>Mainnet launch, governance, marketplace, mobile app</td></tr>
+</table>
+
+<h2 id="faq">FAQ</h2>
+
+<h3>What is Zenith Hermes?</h3>
+<p>Zenith Hermes is an infrastructure platform for building, deploying, and monetizing autonomous AI agents on Base L2. It provides composable skills, templates, and a marketplace for agent creators.</p>
+
+<h3>Do I need ETH to use Zenith Hermes?</h3>
+<p>For testnet (Base Sepolia), you can get free testnet ETH from the Base faucet. For mainnet, you'll need a small amount of ETH on Base for gas fees.</p>
+
+<h3>How do agents earn money?</h3>
+<p>Agents earn revenue when their skills are invoked. Skill creators earn USDC per call, and agent operators earn from the agent's trading/operational activities.</p>
+
+<h3>Can I create my own skills?</h3>
+<p>Yes! The Skill Registry is open. You can create, verify, and publish skills that other agents can use. Skill creators earn fees from every invocation.</p>
+
+<h3>What LLM models are supported?</h3>
+<p>The Playground supports any OpenAI-compatible API: OpenAI (GPT-4o), Anthropic (Claude), Groq (Llama 3), local models via Ollama, and more.</p>
+
+</main>
+
+<script>
+function toggleDocTheme(){
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('zenith-doc-theme', next);
+}
+// Restore theme
+const saved = localStorage.getItem('zenith-doc-theme');
+if(saved) document.documentElement.setAttribute('data-theme', saved);
+
+// Active nav
+document.querySelectorAll('.doc-sidebar nav a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.querySelectorAll('.doc-sidebar nav a').forEach(x => x.classList.remove('active'));
+    a.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
