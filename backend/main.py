@@ -503,7 +503,7 @@ async def dashboard_stats(
 # PLAYGROUND (AI CHAT)
 # ═══════════════════════════════════════════
 LLM_ENDPOINT = os.getenv("LLM_ENDPOINT", "https://token-plan-sgp.xiaomimimo.com/v1/chat/completions")
-LLM_API_KEY = os.getenv("LLM_API_KEY", "tp-sjvc5v7vw1o0ir1db5wnxgdnuq3eojuebv8mr9qhcmb5qxmf")
+LLM_API_KEY = os.getenv("LLM_API_KEY", "tp-sboy3l3qsfrk9bzwu2ztbqxex4msqrdyjs2h877jrzhpgr7b")
 LLM_MODEL = os.getenv("LLM_MODEL", "mimo-v2.5-pro")
 
 AGENT_SYSTEM_PROMPTS = {
@@ -550,7 +550,9 @@ async def playground_chat(data: PlaygroundChat, db: AsyncSession = Depends(get_d
                     json={"model": LLM_MODEL, "messages": messages, "max_tokens": 512},
                 )
                 resp.raise_for_status()
-                reply = resp.json()["choices"][0]["message"]["content"]
+                rdata = resp.json()
+                msg = rdata["choices"][0]["message"]
+                reply = msg.get("content") or msg.get("reasoning_content") or ""
         except Exception:
             reply = ""
 
