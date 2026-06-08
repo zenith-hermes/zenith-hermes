@@ -8,15 +8,13 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Zenith Hermes — AI Agent Infrastructure on Base">
 <meta property="og:description" content="Deploy, compose, and monetize autonomous AI agents with 56 modular skills. Fully on-chain on Base Network.">
-<meta property="og:url" content="https://zenith-hermes.com">
+<meta property="og:url" content="https://agentpad-ernvodjf.devinapps.com">
 <meta property="og:site_name" content="Zenith Hermes">
-<meta property="og:image" content="https://raw.githubusercontent.com/zenith-hermes/zenith-hermes/main/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image" content="https://app.devin.ai/attachments/a266e813-7fc2-4a88-9795-4ab7a0ee048d/screenshot_f4519aaa1b74464eb41a8b69891cdcab.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Zenith Hermes — AI Agent Infrastructure on Base">
 <meta name="twitter:description" content="Deploy, compose, and monetize autonomous AI agents with 56 modular skills. One protocol. Fully on-chain.">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/zenith-hermes/zenith-hermes/main/og-image.png">
+<meta name="twitter:image" content="https://app.devin.ai/attachments/a266e813-7fc2-4a88-9795-4ab7a0ee048d/screenshot_f4519aaa1b74464eb41a8b69891cdcab.png">
 <meta name="theme-color" content="#050505">
 <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
@@ -524,10 +522,10 @@ body::after{
           <h2>Dashboard</h2>
           <div class="sub">Your agent fleet at a glance</div>
           <div class="metrics">
-            <div class="metric"><div class="ml">Active Agents</div><div class="mv" id="dashAgents">0</div><div class="mc" id="dashAgentsSub">loading...</div></div>
-            <div class="metric"><div class="ml">Skills Available</div><div class="mv" id="dashSkills">56</div><div class="mc">8 categories</div></div>
-            <div class="metric"><div class="ml">Total Earned</div><div class="mv" id="dashEarned">$0</div><div class="mc" id="dashEarnedSub">platform total</div></div>
-            <div class="metric"><div class="ml">Active Users</div><div class="mv" id="dashUsers">0</div><div class="mc" id="dashUsersSub">loading...</div></div>
+            <div class="metric"><div class="ml">Active Agents</div><div class="mv" id="dashAgents">0</div><div class="mc">no agents yet</div></div>
+            <div class="metric"><div class="ml">Skills Available</div><div class="mv">56</div><div class="mc">8 categories</div></div>
+            <div class="metric"><div class="ml">Total Earned</div><div class="mv" id="dashEarned">$0</div><div class="mc">connect wallet</div></div>
+            <div class="metric"><div class="ml">Uptime</div><div class="mv">—</div><div class="mc">no agents</div></div>
           </div>
           <div class="feed" id="dashFeed">
             <h3>Recent Activity</h3>
@@ -698,10 +696,10 @@ body::after{
       <div class="ftd">Autonomous agent infrastructure on Base. Build, deploy, and monetize AI agents with composable skills.</div>
     </div>
     <div class="ft-col"><h4>Platform</h4><a href="#">Dashboard</a><a href="#">Agent Factory</a><a href="#">Skill Registry</a><a href="#">Marketplace</a></div>
-    <div class="ft-col"><h4>Resources</h4><a href="docs.html">Documentation</a><a href="whitepaper.html">Whitepaper</a><a href="https://github.com/zenith-hermes/zenith-hermes" target="_blank">GitHub</a><a href="#">API Reference</a></div>
-    <div class="ft-col"><h4>Community</h4><a href="#">Discord</a><a href="https://twitter.com/zenith_hermes" target="_blank">Twitter/X</a><a href="#">Telegram</a><a href="#">Forum</a></div>
+    <div class="ft-col"><h4>Resources</h4><a href="docs.html">Documentation</a><a href="whitepaper.html">Whitepaper</a><a href="#">GitHub</a><a href="#">API Reference</a></div>
+    <div class="ft-col"><h4>Community</h4><a href="#">Discord</a><a href="#">Twitter/X</a><a href="#">Telegram</a><a href="#">Forum</a></div>
   </div>
-  <div class="ft-bottom"><span>Zenith Hermes Protocol · 2025-2026</span><span>Built on Base L2</span></div>
+  <div class="ft-bottom"><span>Zenith Hermes Protocol · 2025</span><span>Built on Base L2</span></div>
 </footer>
 
 <script>
@@ -899,13 +897,9 @@ async function loadInternalDashboard(){
   try{
     var stats=await fetch("/api/dashboard").then(function(r){return r.json()});
     var da=document.getElementById("dashAgents");
-    var ds=document.getElementById("dashSkills");
     var de=document.getElementById("dashEarned");
-    var du=document.getElementById("dashUsers");
-    if(da){da.textContent=stats.total_agents;var s1=document.getElementById("dashAgentsSub");if(s1)s1.textContent=stats.active_agents+" active";}
-    if(ds)ds.textContent=stats.total_skills;
+    if(da){da.textContent=stats.total_agents;da.nextElementSibling&&(da.nextElementSibling.textContent=stats.active_agents+" active");}
     if(de)de.textContent="$"+Math.floor(stats.total_earned);
-    if(du){du.textContent=stats.total_users;var s2=document.getElementById("dashUsersSub");if(s2)s2.textContent="connected wallets";}
   }catch(e){console.warn("Dash:",e);}
   try{
     var agents=await fetch("/api/agents").then(function(r){return r.json()});
@@ -916,7 +910,7 @@ async function loadInternalDashboard(){
       recent.forEach(function(a){
         var ago=timeAgo(a.created_at);
         var sk=a.skills?a.skills.length:0;
-        h+=`<div class="fi"><span class="fd b"></span><span class="ft"><strong>${a.name}</strong> deployed with ${sk} skills <span style="opacity:.5">${ago}</span></span></div>`;
+        h+='<div class="fi"><span class="fd b"></span><span class="ft"><strong>'+a.name+'</strong> deployed with '+sk+' skills <span style="opacity:.5">'+ago+'</span></span></div>';
       });
       feed.innerHTML=h;
     }

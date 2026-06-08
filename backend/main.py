@@ -621,3 +621,5 @@ if STATIC_DIR.exists():
     @app.get("/")
     async def serve_index():
         return FileResponse(STATIC_DIR / "index.html", media_type="text/html")
+
+    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
