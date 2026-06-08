@@ -63,7 +63,7 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
     last_seen: Mapped[datetime] = mapped_column(DateTime, default=utcnow, onupdate=utcnow)
     total_earned: Mapped[float] = mapped_column(Float, default=0.0)
-    zna_staked: Mapped[float] = mapped_column(Float, default=0.0)
+    znh_staked: Mapped[float] = mapped_column(Float, default=0.0)
 
 
 class Agent(Base):
@@ -129,7 +129,7 @@ class UserOut(BaseModel):
     created_at: datetime
     last_seen: datetime
     total_earned: float
-    zna_staked: float
+    znh_staked: float
     model_config = {"from_attributes": True}
 
 class AgentCreate(BaseModel):
