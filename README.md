@@ -1,6 +1,6 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/Base-Sepolia-0052FF?style=for-the-badge&logo=ethereum&logoColor=white" />
-  <img src="https://img.shields.io/badge/Solidity-0.8.20-363636?style=for-the-badge&logo=solidity&logoColor=white" />
+  <img src="https://img.shields.io/badge/Solana-Mainnet-9945FF?style=for-the-badge&logo=solana&logoColor=white" />
+  <img src="https://img.shields.io/badge/Rust-Anchor-000000?style=for-the-badge&logo=rust&logoColor=white" />
   <img src="https://img.shields.io/badge/Python-FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" />
 </p>
@@ -8,7 +8,7 @@
 <h1 align="center">Zenith Hermes</h1>
 
 <p align="center">
-  <strong>Autonomous AI Agent Infrastructure on Base Network</strong>
+  <strong>Autonomous AI Agent Infrastructure on Solana</strong>
 </p>
 
 <p align="center">
@@ -21,16 +21,16 @@
   <a href="https://zenith-hermes.com">Website</a> •
   <a href="https://twitter.com/zenith_hermes">Twitter</a> •
   <a href="#documentation">Docs</a> •
-  <a href="#smart-contracts">Contracts</a>
+  <a href="#programs">Programs</a>
 </p>
 
 ---
 
 ## Overview
 
-Zenith Hermes is a modular infrastructure protocol for autonomous AI agents on Base. It provides the execution layer that connects LLM intelligence to on-chain actions through composable skill modules.
+Zenith Hermes is a modular infrastructure protocol for autonomous AI agents on Solana. It provides the execution layer that connects LLM intelligence to on-chain actions through composable skill modules.
 
-**The Problem:** AI models can analyze markets, identify opportunities, and generate strategies — but they have no native way to execute on-chain. Every team rebuilds the same infrastructure: RPC connections, protocol integrations, gas management, error recovery.
+**The Problem:** AI models can analyze markets, identify opportunities, and generate strategies — but they have no native way to execute on-chain. Every team rebuilds the same infrastructure: RPC connections, protocol integrations, transaction management, error recovery.
 
 **The Solution:** A shared, composable runtime. Pick skills, configure parameters, deploy an agent. The protocol handles execution, state, and chain interactions.
 
@@ -42,37 +42,37 @@ Zenith Hermes is a modular infrastructure protocol for autonomous AI agents on B
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  ┌──────────┐    ┌──────────────┐    ┌────────────────────┐   │
-│  │  Agent   │───▶│   Runtime    │───▶│   Base Network     │   │
+│  │  Agent   │───▶│   Runtime    │───▶│   Solana Network   │   │
 │  │  Config  │    │  (56 Skills) │    │   (Execution)      │   │
 │  └──────────┘    └──────────────┘    └────────────────────┘   │
 │                          │                                      │
 │                          ▼                                      │
 │  ┌──────────────────────────────────────────────────────────┐  │
-│  │              On-Chain Registries                          │  │
+│  │              On-Chain Programs                            │  │
 │  │  Agent Registry • Skill Registry • Staking • $ZNH Token │  │
 │  └──────────────────────────────────────────────────────────┘  │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Smart Contracts
+## Solana Programs
 
-Deployed on **Base Sepolia** (Chain ID: 84532):
+Deployed on **Solana Mainnet**:
 
-| Contract | Address | Description |
-|----------|---------|-------------|
-| **ZNH Token** | [`0x05372b6850FFA3aed775B643AB9537fB8d1bBD1D`](https://sepolia.basescan.org/address/0x05372b6850FFA3aed775B643AB9537fB8d1bBD1D) | ERC-20 governance token (1B supply) |
-| **Agent Registry** | [`0xcF0609e151F2bD004Ac38644dC9343990467F09C`](https://sepolia.basescan.org/address/0xcF0609e151F2bD004Ac38644dC9343990467F09C) | On-chain agent identity & tracking |
-| **Skill Registry** | [`0xEf2Cc3eAb6BAebB0035720e3f60628Ee943bA314`](https://sepolia.basescan.org/address/0xEf2Cc3eAb6BAebB0035720e3f60628Ee943bA314) | Verified composable skill modules |
-| **ZNH Staking** | [`0xa960897e25C126D0fF44Ed06a2a26Fad3BEe85Dc`](https://sepolia.basescan.org/address/0xa960897e25C126D0fF44Ed06a2a26Fad3BEe85Dc) | Stake $ZNH, earn protocol fees |
+| Program | Description |
+|---------|-------------|
+| **ZNH Token** | SPL token — governance & utility (1B supply) |
+| **Agent Registry** | On-chain agent identity & tracking |
+| **Skill Registry** | Verified composable skill modules |
+| **ZNH Staking** | Stake $ZNH, earn protocol fees |
 
-### Contract Architecture
+### Program Architecture
 
-```solidity
+```rust
 // Composable skill-based agent deployment
-AgentRegistry.registerAgent(name, model, skillIds[])
-SkillRegistry.verifySkill(skillId, proof)
-ZNHStaking.stake(amount, lockTier) // Flex | 30d | 90d | 180d | 365d
+agent_registry::register_agent(name, model, skill_ids)
+skill_registry::verify_skill(skill_id, proof)
+znh_staking::stake(amount, lock_tier) // Flex | 30d | 90d | 180d | 365d
 ```
 
 ## Features
@@ -81,22 +81,22 @@ ZNHStaking.stake(amount, lockTier) // Flex | 30d | 90d | 180d | 365d
 
 | Category | Skills | Examples |
 |----------|--------|----------|
-| **DeFi** | 8 | Uniswap V3 routing, Aave lending, Compound yield |
+| **DeFi** | 8 | Jupiter swap, Raydium LP, Orca whirlpools, Marinade staking |
 | **Analytics** | 7 | Price tracking, whale monitoring, volume analysis |
 | **Trading** | 8 | Limit orders, DCA, arbitrage detection |
 | **Social** | 6 | Sentiment analysis, Twitter monitoring, community alerts |
-| **Security** | 7 | Contract auditing, rug detection, permission scanning |
+| **Security** | 7 | Program auditing, rug detection, permission scanning |
 | **Automation** | 7 | Cron scheduling, conditional triggers, auto-rebalance |
 | **Governance** | 6 | Proposal tracking, vote delegation, quorum monitoring |
-| **Utility** | 7 | Gas optimization, ENS resolution, multi-chain bridge |
+| **Utility** | 7 | Fee optimization, SNS resolution, cross-chain bridge |
 
 ### Platform Capabilities
 
 - **AI Playground** — Real-time conversational interface powered by LLM
 - **Agent Factory** — Visual agent builder with skill composition
-- **On-Chain Registry** — Immutable agent/skill records on Base
+- **On-Chain Registry** — Immutable agent/skill records on Solana
 - **Staking Protocol** — Lock $ZNH across 5 tiers for multiplied rewards
-- **MetaMask Integration** — Native Base network wallet connection
+- **Phantom Integration** — Native Solana wallet connection
 - **Dark/Light Modes** — Persistent user preference
 
 ## Getting Started
@@ -104,8 +104,7 @@ ZNHStaking.stake(amount, lockTier) // Flex | 30d | 90d | 180d | 365d
 ### Prerequisites
 
 - Python 3.10+
-- Node.js 18+ (optional, for contract tooling)
-- [Foundry](https://getfoundry.sh/) (for smart contract development)
+- Rust + Anchor CLI (for program development)
 
 ### Backend + Frontend
 
@@ -121,21 +120,16 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 
 Open `http://localhost:8000` — full platform served from single origin.
 
-### Smart Contracts
+### Solana Programs
 
 ```bash
-cd contracts
-forge install OpenZeppelin/openzeppelin-contracts@v5.1.0 --no-git
-forge build
+cd programs
+anchor build
 ```
 
-Deploy to Base Sepolia:
+Deploy to Solana:
 ```bash
-export DEPLOYER_PRIVATE_KEY=0x...
-forge script script/Deploy.s.sol \
-  --rpc-url https://sepolia.base.org \
-  --broadcast \
-  --verify
+anchor deploy --provider.cluster mainnet
 ```
 
 ## Tokenomics — $ZNH
@@ -164,11 +158,11 @@ forge script script/Deploy.s.sol \
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | Single-file SPA, CSS Grid, Web3.js |
+| Frontend | Single-file SPA, CSS Grid, Solana Web3.js |
 | Backend | Python, FastAPI, SQLAlchemy, aiosqlite |
 | AI | LLM integration (pluggable provider) |
-| Contracts | Solidity 0.8.20, Foundry, OpenZeppelin v5 |
-| Network | Base (mainnet: 8453, testnet: Sepolia 84532) |
+| Programs | Rust, Anchor, SPL Token |
+| Network | Solana (Mainnet) |
 | Typography | Space Grotesk, Inter, JetBrains Mono |
 
 ## Project Structure
@@ -180,16 +174,11 @@ zenith-hermes/
 │   ├── static/
 │   │   └── index.html       # Frontend SPA (all UI + logic)
 │   └── pyproject.toml       # Python dependencies
-├── contracts/
-│   ├── src/
-│   │   ├── ZNHToken.sol     # ERC-20 governance token
-│   │   ├── AgentRegistry.sol
-│   │   ├── SkillRegistry.sol
-│   │   └── ZNHStaking.sol
-│   ├── script/
-│   │   └── Deploy.s.sol     # Foundry deployment script
-│   ├── foundry.toml
-│   └── remappings.txt
+├── programs/
+│   ├── znh_token/           # SPL governance token
+│   ├── agent_registry/      # Agent registration program
+│   ├── skill_registry/      # Skill verification program
+│   └── znh_staking/         # Staking program
 ├── index.html               # Static landing page
 ├── docs.html                # Documentation
 └── whitepaper.html          # Protocol whitepaper v0.1
@@ -204,10 +193,9 @@ zenith-hermes/
 ## Roadmap
 
 - [x] Core platform (Frontend + Backend + AI)
-- [x] Smart contract deployment (Base Sepolia)
+- [x] Solana program deployment
 - [x] 56 skill modules across 8 categories
 - [x] Staking protocol with tiered rewards
-- [ ] Mainnet deployment (Base)
 - [ ] Skill marketplace with creator incentives
 - [ ] Cross-chain agent execution
 - [ ] Governance module (proposal + voting)
@@ -241,7 +229,7 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 ---
 
 <p align="center">
-  <strong>Built on Base. Powered by composable intelligence.</strong>
+  <strong>Built on Solana. Powered by composable intelligence.</strong>
   <br /><br />
   <a href="https://twitter.com/zenith_hermes">Twitter</a> •
   <a href="https://zenith-hermes.com">Website</a> •
