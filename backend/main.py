@@ -1,6 +1,6 @@
 """
 Zenith Hermes — Backend API (single-file for deployment)
-AI Agent Infrastructure on Base
+AI Agent Infrastructure on Solana
 """
 import os
 import uuid
@@ -201,24 +201,24 @@ class DashboardStats(BaseModel):
 # SEED DATA
 # ═══════════════════════════════════════════
 SKILLS_SEED = [
-    ("Uniswap V3 Swap", "DEFI", "Execute token swaps via Uniswap V3 on Base"),
-    ("Aerodrome Router", "DEFI", "Route trades through Aerodrome DEX"),
-    ("Aave Lend/Borrow", "DEFI", "Automated lending and borrowing on Aave V3"),
-    ("Curve Pool Manager", "DEFI", "Manage stablecoin pools on Curve Finance"),
-    ("Balancer Flash Loan", "DEFI", "Execute flash loans via Balancer"),
-    ("Compound Supply", "DEFI", "Supply assets to Compound protocol"),
-    ("1inch Aggregator", "DEFI", "Multi-DEX aggregation for best swap rates"),
+    ("Jupiter Swap", "DEFI", "Execute token swaps via Jupiter aggregator on Solana"),
+    ("Raydium AMM", "DEFI", "Trade and provide liquidity on Raydium"),
+    ("Orca Whirlpools", "DEFI", "Concentrated liquidity on Orca"),
+    ("Marinade Stake", "DEFI", "Liquid staking SOL via Marinade Finance"),
+    ("Drift Protocol", "DEFI", "Perpetual trading on Drift"),
+    ("Kamino Finance", "DEFI", "Automated liquidity management on Kamino"),
+    ("Jito Staking", "DEFI", "MEV-optimized SOL staking via Jito"),
     ("GPT-4o Inference", "AI/LLM", "Run inference via OpenAI GPT-4o"),
     ("Claude Analysis", "AI/LLM", "Deep analysis via Anthropic Claude"),
     ("Llama 3 Local", "AI/LLM", "Local LLM inference with Meta Llama 3"),
     ("Sentiment Analyzer", "AI/LLM", "NLP sentiment analysis for crypto markets"),
     ("Text Embeddings", "AI/LLM", "Generate vector embeddings for semantic search"),
     ("Image Recognition", "AI/LLM", "Classify and analyze chart images"),
-    ("Code Generator", "AI/LLM", "Generate Solidity/JS code from natural language"),
+    ("Code Generator", "AI/LLM", "Generate Rust/Anchor code from natural language"),
     ("Dune Analytics", "DATA", "Query Dune dashboards for on-chain data"),
     ("The Graph Query", "DATA", "Query subgraphs for indexed blockchain data"),
     ("DefiLlama Fetch", "DATA", "Fetch TVL, yield, and protocol data"),
-    ("Etherscan Scanner", "DATA", "Scan contract events and transactions"),
+    ("Solscan Scanner", "DATA", "Scan Solana transactions and programs"),
     ("CoinGecko Price", "DATA", "Real-time price data from CoinGecko API"),
     ("Nansen Tracker", "DATA", "Track smart money wallet movements"),
     ("Arkham Intel", "DATA", "On-chain intelligence and entity labeling"),
@@ -233,23 +233,23 @@ SKILLS_SEED = [
     ("Pyth Network", "ORACLE", "High-frequency price data from Pyth"),
     ("Band Protocol", "ORACLE", "Cross-chain oracle data from Band"),
     ("API3 dAPI", "ORACLE", "First-party oracle data via API3"),
-    ("Redstone Oracle", "ORACLE", "Modular oracle with EVM-compatible data"),
-    ("UMA Optimistic Oracle", "ORACLE", "Dispute-based oracle for complex queries"),
+    ("Switchboard", "ORACLE", "Permissionless oracle feeds on Solana"),
+    ("DIA Oracle", "ORACLE", "Multi-chain oracle with Solana support"),
     ("Tellor Reporter", "ORACLE", "Community-powered oracle reports"),
-    ("Slither Audit", "SECURITY", "Static analysis for Solidity contracts"),
-    ("Forta Alerts", "SECURITY", "Real-time threat detection alerts"),
-    ("OpenZeppelin Defender", "SECURITY", "Automated security monitoring"),
+    ("Sec3 Audit", "SECURITY", "Static analysis for Solana programs"),
+    ("Blowfish Monitor", "SECURITY", "Real-time threat detection alerts"),
+    ("Squads Multisig", "SECURITY", "Multi-signature program operations"),
     ("Rug Check", "SECURITY", "Detect potential rug pulls and scams"),
     ("Permit Scanner", "SECURITY", "Scan for malicious token approvals"),
     ("MEV Protection", "SECURITY", "Protect transactions from MEV bots"),
     ("Gas Optimizer", "SECURITY", "Optimize gas usage for transactions"),
-    ("Base Bridge", "CHAIN", "Bridge assets to/from Base L2"),
-    ("Optimism Gateway", "CHAIN", "Cross-chain ops with Optimism"),
-    ("Arbitrum Bridge", "CHAIN", "Bridge to Arbitrum One"),
-    ("LayerZero Send", "CHAIN", "Omnichain messaging via LayerZero"),
-    ("Wormhole Transfer", "CHAIN", "Cross-chain token transfers"),
-    ("Axelar GMP", "CHAIN", "General message passing across chains"),
-    ("Hyperlane Dispatch", "CHAIN", "Permissionless interchain messaging"),
+    ("Wormhole Bridge", "CHAIN", "Cross-chain token transfers via Wormhole"),
+    ("deBridge", "CHAIN", "Fast cross-chain bridging to Solana"),
+    ("SPL Transfer", "CHAIN", "Send SPL tokens on Solana"),
+    ("NFT Mint (Metaplex)", "CHAIN", "Mint NFTs via Metaplex on Solana"),
+    ("SNS Resolve", "CHAIN", "Solana Name Service domain resolution"),
+    ("Transaction Bundle", "CHAIN", "Bundle Solana transactions for atomicity"),
+    ("Priority Fee Optimizer", "CHAIN", "Optimize priority fees on Solana"),
     ("IPFS Pin", "STORAGE", "Pin data to IPFS for permanent storage"),
     ("Arweave Store", "STORAGE", "Permanent data storage on Arweave"),
     ("Filecoin Deal", "STORAGE", "Decentralized storage deals on Filecoin"),
@@ -283,7 +283,7 @@ async def lifespan(_app: FastAPI):
 
 app = FastAPI(
     title="Zenith Hermes API",
-    description="AI Agent Infrastructure on Base — deploy, compose, and monetize agents",
+    description="AI Agent Infrastructure on Solana — deploy, compose, and monetize agents",
     version="0.1.0",
     lifespan=lifespan,
 )
@@ -507,10 +507,10 @@ LLM_API_KEY = os.getenv("LLM_API_KEY", "tp-sboy3l3qsfrk9bzwu2ztbqxex4msqrdyjs2h8
 LLM_MODEL = os.getenv("LLM_MODEL", "mimo-v2.5-pro")
 
 AGENT_SYSTEM_PROMPTS = {
-    "alpha-hunter": "You are Zenith Hermes, an AI agent on Base network that helps with DeFi trading, token analysis, and swap strategies. Reply in plain casual chat style like a knowledgeable friend. Never use markdown formatting like bold (**text**), italic (*text*), bullet points, or headers. Never use emojis. Keep responses short and natural, like texting. Just plain text, no formatting at all.",
-    "defi-sentinel": "You are Zenith Hermes, an AI monitoring agent on Base network. You track DeFi protocols, yield rates, and security. Reply in plain casual chat style like a knowledgeable friend. Never use markdown formatting like bold (**text**), italic (*text*), bullet points, or headers. Never use emojis. Keep responses short and natural, like texting. Just plain text, no formatting at all.",
+    "alpha-hunter": "You are Zenith Hermes, an AI agent on Solana that helps with DeFi trading, token analysis, and swap strategies. Reply in plain casual chat style like a knowledgeable friend. Never use markdown formatting like bold (**text**), italic (*text*), bullet points, or headers. Never use emojis. Keep responses short and natural, like texting. Just plain text, no formatting at all.",
+    "defi-sentinel": "You are Zenith Hermes, an AI monitoring agent on Solana. You track DeFi protocols, yield rates, and security. Reply in plain casual chat style like a knowledgeable friend. Never use markdown formatting like bold (**text**), italic (*text*), bullet points, or headers. Never use emojis. Keep responses short and natural, like texting. Just plain text, no formatting at all.",
     "research-bot": "You are Zenith Hermes, an AI research agent. You analyze crypto projects, tokenomics, and market trends. Reply in plain casual chat style like a knowledgeable friend. Never use markdown formatting like bold (**text**), italic (*text*), bullet points, or headers. Never use emojis. Keep responses short and natural, like texting. Just plain text, no formatting at all.",
-    "custom": "You are Zenith Hermes, an AI agent on Base network. Help with whatever the user needs. Reply in plain casual chat style like a knowledgeable friend. Never use markdown formatting like bold (**text**), italic (*text*), bullet points, or headers. Never use emojis. Keep responses short and natural, like texting. Just plain text, no formatting at all.",
+    "custom": "You are Zenith Hermes, an AI agent on Solana. Help with whatever the user needs. Reply in plain casual chat style like a knowledgeable friend. Never use markdown formatting like bold (**text**), italic (*text*), bullet points, or headers. Never use emojis. Keep responses short and natural, like texting. Just plain text, no formatting at all.",
 }
 
 
@@ -575,20 +575,20 @@ async def playground_chat(data: PlaygroundChat, db: AsyncSession = Depends(get_d
 def _generate_smart_reply(message: str, agent_type: str) -> str:
     msg = message.lower()
     if any(w in msg for w in ["price", "harga", "berapa"]):
-        return "ETH is currently trading at ~$2,450 on Base. Gas fees are minimal (~0.001 gwei). For real-time prices, I recommend connecting to a price oracle skill like Chainlink Price Feed or Pyth Network."
+        return "SOL is currently trading around $170. Transaction fees on Solana are super low, like fractions of a cent. For real-time prices I recommend connecting to a price oracle skill like Pyth Network or Switchboard."
     if any(w in msg for w in ["swap", "trade", "buy", "sell", "jual", "beli"]):
-        return "To execute swaps on Base, I can route through Uniswap V3 or Aerodrome. Connect your wallet first, then specify the token pair and amount. Example: 'swap 0.1 ETH to USDC'."
+        return "To execute swaps on Solana, I can route through Jupiter or Raydium. Connect your Phantom wallet first, then specify the token pair and amount. Example: 'swap 1 SOL to USDC'."
     if any(w in msg for w in ["portfolio", "balance", "saldo", "wallet"]):
-        return "Connect your wallet to view your portfolio. I can track your token balances, LP positions, and agent earnings across Base L2. All data is fetched on-chain in real-time."
+        return "Connect your Phantom wallet to view your portfolio. I can track your token balances, LP positions, and agent earnings on Solana. All data is fetched on-chain in real-time."
     if any(w in msg for w in ["stake", "staking", "yield", "apy"]):
         return "Zenith Hermes staking is coming soon. You'll be able to stake $ZNH tokens to earn protocol fees. Estimated APY will depend on total staked amount and protocol revenue."
     if any(w in msg for w in ["agent", "deploy", "create", "buat"]):
-        return "To deploy an agent: 1) Go to Agent Factory, 2) Choose a template (Trading Bot, DeFi Monitor, etc.), 3) Select skills from the registry, 4) Deploy to Base. Your agent will start operating autonomously."
+        return "To deploy an agent: 1) Go to Agent Factory, 2) Choose a template (Trading Bot, DeFi Monitor, etc.), 3) Select skills from the registry, 4) Deploy to Solana. Your agent will start operating autonomously."
     if any(w in msg for w in ["skill", "registry"]):
         return "There are 56 skills across 8 categories: DEFI, AI/LLM, DATA, SOCIAL, ORACLE, SECURITY, CHAIN, STORAGE. Each skill is composable — plug them into any agent. Browse the Skill Registry to explore."
     if any(w in msg for w in ["help", "tolong", "bantuan", "apa"]):
         return "I can help you with: trading analysis, portfolio tracking, DeFi monitoring, agent deployment, and skill recommendations. Try asking: 'What's the price of ETH?' or 'Help me deploy a trading agent'."
-    return f"I'm your {agent_type.replace('-', ' ').title()} agent on Zenith. I can help with DeFi analysis, agent deployment, and skill management on Base L2. What would you like to do?"
+    return f"I'm your {agent_type.replace('-', ' ').title()} agent on Zenith. I can help with DeFi analysis, agent deployment, and skill management on Solana. What would you like to do?"
 
 
 @app.get("/api/playground/history")
